@@ -1,0 +1,5 @@
+pytest
+sphinx
+
+# Install the following packages in development mode
+-e .

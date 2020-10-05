@@ -27,7 +27,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.7"
     ],
-    keywords="tree 'data structure'",
+    keywords="tree data-structures",
     packages=setuptools.find_packages(exclude=["examples", "tests"]),
     entry_points={
         "console_scripts": [

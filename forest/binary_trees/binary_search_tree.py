@@ -88,7 +88,7 @@ class BinarySearchTree:
     def __init__(self) -> None:
         self.root: Optional[Node] = None
 
-    def __reduce__(self) -> str:
+    def __repr__(self) -> str:
         """Provie the tree representation to visualize its layout."""
         return (
             f"{type(self)}, root={self.root}, "

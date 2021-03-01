@@ -1,6 +1,6 @@
-<mxfile host="65bd71144e" modified="2021-02-28T19:38:01.437Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="x2h-d-j98CXUjIKptXAA" version="14.2.4" type="embed">
+<mxfile host="65bd71144e" modified="2021-03-01T05:51:28.155Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="DxWagoYA2zjDA8B7kGqv" version="14.2.4" type="embed">
     <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
-        <mxGraphModel dx="668" dy="574" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1327" dy="645" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -94,7 +94,7 @@
                         <mxPoint x="230" y="190" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="24" value="&lt;font color=&quot;#97d077&quot; style=&quot;font-size: 16px;&quot;&gt;Path to find the smallest key&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" parent="1" vertex="1">
+                <mxCell id="24" value="&lt;font color=&quot;#97d077&quot; style=&quot;font-size: 16px&quot;&gt;Path to find the leftmost node&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" parent="1" vertex="1">
                     <mxGeometry x="120" y="120" width="120" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="25" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;edgeStyle=orthogonalEdgeStyle;curved=1;strokeColor=#FF3333;strokeWidth=2;" parent="1" source="3" target="5" edge="1">
@@ -109,7 +109,7 @@
                         <mxPoint x="470" y="190" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="27" value="&lt;font style=&quot;font-size: 16px&quot; color=&quot;#ff3333&quot;&gt;Path to find the largest key&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" parent="1" vertex="1">
+                <mxCell id="27" value="&lt;font style=&quot;font-size: 16px&quot; color=&quot;#ff3333&quot;&gt;Path to find the rightmost node&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" parent="1" vertex="1">
                     <mxGeometry x="460" y="120" width="110" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" value="&lt;font color=&quot;#97d077&quot;&gt;Min&lt;/font&gt;&lt;font color=&quot;#000000&quot;&gt; and &lt;/font&gt;&lt;font color=&quot;#ff3333&quot;&gt;Max&lt;/font&gt;&lt;font color=&quot;#000000&quot;&gt; of the tree whose root is 23&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" parent="1" vertex="1">

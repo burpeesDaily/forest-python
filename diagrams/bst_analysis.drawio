@@ -1,6 +1,6 @@
-<mxfile host="65bd71144e" modified="2021-02-28T19:40:21.366Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="MdCLeWsc_rfG1GaYVDng" version="14.2.4" type="embed" pages="2">
+<mxfile host="65bd71144e" modified="2021-03-08T01:02:47.426Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.54.1 Chrome/87.0.4280.141 Electron/11.3.0 Safari/537.36" etag="D2cXYLNNANZkSGqALavB" version="14.2.4" type="embed" pages="2">
     <diagram id="6hGFLwfOUW9BJ-s0fimq" name="basic">
-        <mxGraphModel dx="668" dy="574" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1327" dy="645" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -137,7 +137,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="successor_worst_case" id="6D2gquU68HdH94RHYlkC">
-        <mxGraphModel dx="668" dy="574" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1327" dy="645" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="Yll5NHxpdR0R9B9jEXX6-0"/>
                 <mxCell id="Yll5NHxpdR0R9B9jEXX6-1" parent="Yll5NHxpdR0R9B9jEXX6-0"/>

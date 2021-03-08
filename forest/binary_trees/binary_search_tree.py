@@ -90,10 +90,12 @@ class BinarySearchTree:
 
     def __repr__(self) -> str:
         """Provie the tree representation to visualize its layout."""
-        return (
-            f"{type(self)}, root={self.root}, "
-            f"tree_height={str(self.get_height(self.root))}"
-        )
+        if self.root:
+            return (
+                f"{type(self)}, root={self.root}, "
+                f"tree_height={str(self.get_height(self.root))}"
+            )
+        return str()
 
     def search(self, key: Any) -> Optional[Node]:
         """Look for a node by a given key.
@@ -140,7 +142,7 @@ class BinarySearchTree:
         parent: Optional[Node] = None
         current: Optional[Node] = self.root
         while current:
-            parent = parent
+            parent = current
             if new_node.key < current.key:
                 current = current.left
             elif new_node.key > current.key:
@@ -297,7 +299,7 @@ class BinarySearchTree:
         return parent
 
     @staticmethod
-    def get_height(node: Optional[Node]) -> int:
+    def get_height(node: Node) -> int:
         """Get the height of the given node.
 
         Parameters
@@ -310,19 +312,20 @@ class BinarySearchTree:
         `int`
             The height of the given node.
         """
-        if node is None:
-            return 0
-
-        if (node.left is None) and (node.right is None):
-            return 0
-
-        return (
-            max(
+        if node.left and node.right:
+            return max(
                 BinarySearchTree.get_height(node=node.left),
-                BinarySearchTree.get_height(node.right),
-            )
-            + 1
-        )
+                BinarySearchTree.get_height(node=node.right),
+            ) + 1
+
+        if node.left:
+            return BinarySearchTree.get_height(node=node.left) + 1
+
+        if node.right:
+            return BinarySearchTree.get_height(node=node.right) + 1
+
+        # If reach here, it means the node is a leaf node.
+        return 0
 
     @property
     def empty(self) -> bool:

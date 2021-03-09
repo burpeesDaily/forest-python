@@ -283,10 +283,13 @@ class BinarySearchTree:
             The height of the given subtree. 0 if the subtree has only one node.
         """
         if node.left and node.right:
-            return max(
-                BinarySearchTree.get_height(node=node.left),
-                BinarySearchTree.get_height(node=node.right),
-            ) + 1
+            return (
+                max(
+                    BinarySearchTree.get_height(node=node.left),
+                    BinarySearchTree.get_height(node=node.right),
+                )
+                + 1
+            )
 
         if node.left:
             return BinarySearchTree.get_height(node=node.left) + 1

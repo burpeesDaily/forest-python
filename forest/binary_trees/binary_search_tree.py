@@ -53,36 +53,6 @@ class BinarySearchTree:
         Return the predecessor node in the in-order order.
     get_height(node: `Optional[Node]`)
         Return the height of the given node.
-
-    Examples
-    --------
-    >>> from forest.binary_trees import binary_search_tree
-    >>> tree = binary_search_tree.BinarySearchTree()
-    >>> tree = binary_search_tree.BinarySearchTree()
-    >>> tree.insert(key=23, data="23")
-    >>> tree.insert(key=4, data="4")
-    >>> tree.insert(key=30, data="30")
-    >>> tree.insert(key=11, data="11")
-    >>> tree.insert(key=7, data="7")
-    >>> tree.insert(key=34, data="34")
-    >>> tree.insert(key=20, data="20")
-    >>> tree.insert(key=24, data="24")
-    >>> tree.insert(key=22, data="22")
-    >>> tree.insert(key=15, data="15")
-    >>> tree.insert(key=1, data="1")
-    >>> tree.get_leftmost().key
-    1
-    >>> tree.get_leftmost().data
-    '1'
-    >>> tree.get_rightmost().key
-    34
-    >>> tree.get_rightmost().data
-    "34"
-    >>> tree.get_height(tree.root)
-    4
-    >>> tree.search(24).data
-    `24`
-    >>> tree.delete(15)
     """
 
     def __init__(self) -> None:
@@ -109,7 +79,7 @@ class BinarySearchTree:
         -------
         `Optional[Node]`
             The node found by the given key.
-        If the key does not exist, return Node.
+        If the key does not exist, return `None`.
         """
         current = self.root
 
@@ -159,7 +129,7 @@ class BinarySearchTree:
             parent.right = new_node
 
     def delete(self, key: Any) -> None:
-        """Delete the node based on the given key.
+        """Delete a node according to the given key.
 
         Parameters
         ----------
@@ -254,7 +224,7 @@ class BinarySearchTree:
 
     @staticmethod
     def get_successor(node: Node) -> Optional[Node]:
-        """Return the successor node in the in-order order.
+        """Return the successor in the in-order order.
 
         Parameters
         ----------
@@ -277,7 +247,7 @@ class BinarySearchTree:
 
     @staticmethod
     def get_predecessor(node: Node) -> Optional[Node]:
-        """Return the predecessor node in the in-order order.
+        """Return the predecessor in the in-order order.
 
         Parameters
         ----------
@@ -300,17 +270,17 @@ class BinarySearchTree:
 
     @staticmethod
     def get_height(node: Node) -> int:
-        """Get the height of the given node.
+        """Get the height of the given subtree.
 
         Parameters
         ----------
         node: `Node`
-            The node to get its height.
+            The root of the subtree to get its height.
 
         Returns
         -------
         `int`
-            The height of the given node.
+            The height of the given subtree. 0 if the subtree has only one node.
         """
         if node.left and node.right:
             return max(

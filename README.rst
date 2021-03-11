@@ -14,11 +14,11 @@ Build the Forest in Python
     :target: https://github.com/psf/black
 
 
-The *Build the Forest in Python* project is the repository for the build-the-forest-series_.
+The *Build the Forest in Python* project is the repository for the `Build the Forest Series`_.
 This project provides several tree data structure implementation, and is mainly for educative
 and informative purposes.
 
-.. _build-the-forest-series: https://shunsvineyard.info/build-the-forest-series/
+.. _`Build the Forest Series`: https://shunsvineyard.info/build-the-forest-series/
 
 
 Requirements

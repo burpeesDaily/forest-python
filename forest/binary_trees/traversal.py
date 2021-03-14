@@ -4,21 +4,35 @@
 
 """Traversal module for traversing binary trees."""
 
-from typing import Any, Iterator, Tuple, Union
+from typing import Any, Iterator, Optional, Tuple, Union, overload
 
 from forest.binary_trees import binary_search_tree
 
 # Alisa for the supported node types. For type checking.
 SupportedNode = Union[None, binary_search_tree.Node]
 
-SupportedTree = Union[binary_search_tree.BinarySearchTree]
+SupportedTree = Union[None, binary_search_tree.BinarySearchTree]
 """Alisa for the supported tree types. For type checking."""
 
 Pairs = Iterator[Tuple[Any, Any]]
 """Iterator of Key-Value pairs, yield by traversal functions. For type checking"""
 
 
-def inorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pairs:
+@overload
+def inorder_traverse(tree: None, recursive: bool = True) -> None:
+    """`inorder_traverse` interface for an empty tree."""
+    ...
+
+
+@overload
+def inorder_traverse(
+    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
+) -> Pairs:
+    """`inorder_traverse` interface for a `BinarySearchTree`."""
+    ...
+
+
+def inorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[Pairs]:
     """Perform In-Order traversal.
 
     In-order traversal traverses a tree by the order:
@@ -56,12 +70,28 @@ def inorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pairs:
     [(1, '1'), (4, '4'), (7, '7'), (11, '11'), (15, '15'), (20, '20'),
      (22, '22'), (23, '23'), (24, '24'), (30, '30'), (34, '34')]
     """
-    if recursive:
-        return _inorder_traverse(node=tree.root)
-    return _inorder_traverse_non_recursive(root=tree.root)
+    if tree:
+        if recursive:
+            return _inorder_traverse(node=tree.root)
+        return _inorder_traverse_non_recursive(root=tree.root)
+    return None
 
 
-def preorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pairs:
+@overload
+def preorder_traverse(tree: None, recursive: bool = True) -> None:
+    """`preorder_traverse` interface for an empty tree."""
+    ...
+
+
+@overload
+def preorder_traverse(
+    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
+) -> Pairs:
+    """`preorder_traverse` interface for a `BinarySearchTree`."""
+    ...
+
+
+def preorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[Pairs]:
     """Perform Pre-Order traversal.
 
     Pre-order traversal traverses a tree by the order:
@@ -99,12 +129,28 @@ def preorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pairs:
     [(23, '23'), (4, '4'), (1, '1'), (11, '11'), (7, '7'), (20, '20'),
      (15, '15'), (22, '22'), (30, '30'), (24, '24'), (34, '34')]
     """
-    if recursive:
-        return _preorder_traverse(node=tree.root)
-    return _preorder_traverse_non_recursive(root=tree.root)
+    if tree:
+        if recursive:
+            return _preorder_traverse(node=tree.root)
+        return _preorder_traverse_non_recursive(root=tree.root)
+    return None
 
 
-def postorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pairs:
+@overload
+def postorder_traverse(tree: None, recursive: bool = True) -> None:
+    """`postorder_traverse` interface for an empty tree."""
+    ...
+
+
+@overload
+def postorder_traverse(
+    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
+) -> Pairs:
+    """`postorder_traverse` interface for a `BinarySearchTree`."""
+    ...
+
+
+def postorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[Pairs]:
     """Perform Post-Order traversal.
 
     Post-order traversal traverses a tree by the order:
@@ -142,12 +188,30 @@ def postorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pairs:
     [(1, '1'), (7, '7'), (15, '15'), (22, '22'), (20, '20'), (11, '11'),
      (4, '4'), (24, '24'), (34, '34'), (30, '30'), (23, '23')]
     """
-    if recursive:
-        return _postorder_traverse(node=tree.root)
-    return _postorder_traverse_non_recursive(root=tree.root)
+    if tree:
+        if recursive:
+            return _postorder_traverse(node=tree.root)
+        return _postorder_traverse_non_recursive(root=tree.root)
+    return None
 
 
-def reverse_inorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pairs:
+@overload
+def reverse_inorder_traverse(tree: None, recursive: bool = True) -> None:
+    """`reverse_inorder_traverse` interface for an empty tree."""
+    ...
+
+
+@overload
+def reverse_inorder_traverse(
+    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
+) -> Pairs:
+    """`reverse_inorder_traverse` interface for a `BinarySearchTree`."""
+    ...
+
+
+def reverse_inorder_traverse(
+    tree: SupportedTree, recursive: bool = True
+) -> Optional[Pairs]:
     """Perform reversed In-Order traversal.
 
     Reversed in-order traversal traverses a tree by the order:
@@ -185,12 +249,26 @@ def reverse_inorder_traverse(tree: SupportedTree, recursive: bool = True) -> Pai
     [(34, '34'), (30, '30'), (24, '24'), (23, '23'), (22, '22'), (20, '20'),
      (15, '15'), (11, '11'), (7, '7'), (4, '4'), (1, '1')]
     """
-    if recursive:
-        return _reverse_inorder_traverse(node=tree.root)
-    return _reverse_inorder_traverse_non_recursive(root=tree.root)
+    if tree:
+        if recursive:
+            return _reverse_inorder_traverse(node=tree.root)
+        return _reverse_inorder_traverse_non_recursive(root=tree.root)
+    return None
 
 
-def levelorder_traverse(tree: SupportedTree) -> Pairs:
+@overload
+def levelorder_traverse(tree: None) -> None:
+    """`leverorder_traverse` interface for an empty tree."""
+    ...
+
+
+@overload
+def levelorder_traverse(tree: binary_search_tree.BinarySearchTree) -> Pairs:
+    """`levelorder_traverse` interface for a `BinarySearchTree`."""
+    ...
+
+
+def levelorder_traverse(tree: SupportedTree) -> Optional[Pairs]:
     """Perform Level-Order traversal.
 
     Level-order traversal traverses a tree:
@@ -226,17 +304,19 @@ def levelorder_traverse(tree: SupportedTree) -> Pairs:
     [(23, '23'), (4, '4'), (30, '30'), (1, '1'), (11, '11'), (24, '24'),
      (34, '34'), (7, '7'), (20, '20'), (15, '15'), (22, '22')]
     """
-    queue = [tree.root]
+    if tree:
+        queue = [tree.root]
 
-    while len(queue) > 0:
-        temp = queue.pop(0)
-        if temp:
-            yield (temp.key, temp.data)
-            if temp.left:
-                queue.append(temp.left)
+        while len(queue) > 0:
+            temp = queue.pop(0)
+            if temp:
+                yield (temp.key, temp.data)
+                if temp.left:
+                    queue.append(temp.left)
 
-            if temp.right:
-                queue.append(temp.right)
+                if temp.right:
+                    queue.append(temp.right)
+    return None
 
 
 def _inorder_traverse(node: SupportedNode) -> Pairs:

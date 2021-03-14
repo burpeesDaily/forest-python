@@ -65,7 +65,7 @@ class BinarySearchTree:
                 f"{type(self)}, root={self.root}, "
                 f"tree_height={str(self.get_height(self.root))}"
             )
-        return str()
+        return "empty tree"
 
     def search(self, key: Any) -> Optional[Node]:
         """Look for a node by a given key.

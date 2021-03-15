@@ -4,7 +4,7 @@
 
 """Traversal module for traversing binary trees."""
 
-from typing import Any, Iterator, Optional, Tuple, Union, overload
+from typing import Any, Iterator, Optional, Union
 
 from forest.binary_trees import binary_search_tree
 
@@ -14,22 +14,8 @@ SupportedNode = Union[None, binary_search_tree.Node]
 SupportedTree = Union[None, binary_search_tree.BinarySearchTree]
 """Alisa for the supported tree types. For type checking."""
 
-Pairs = Iterator[Tuple[Any, Any]]
+Pairs = Iterator[tuple[Any, Any]]
 """Iterator of Key-Value pairs, yield by traversal functions. For type checking"""
-
-
-@overload
-def inorder_traverse(tree: None, recursive: bool = True) -> None:
-    """`inorder_traverse` interface for an empty tree."""
-    ...
-
-
-@overload
-def inorder_traverse(
-    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
-) -> Pairs:
-    """`inorder_traverse` interface for a `BinarySearchTree`."""
-    ...
 
 
 def inorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[Pairs]:
@@ -77,20 +63,6 @@ def inorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[Pa
     return None
 
 
-@overload
-def preorder_traverse(tree: None, recursive: bool = True) -> None:
-    """`preorder_traverse` interface for an empty tree."""
-    ...
-
-
-@overload
-def preorder_traverse(
-    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
-) -> Pairs:
-    """`preorder_traverse` interface for a `BinarySearchTree`."""
-    ...
-
-
 def preorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[Pairs]:
     """Perform Pre-Order traversal.
 
@@ -134,20 +106,6 @@ def preorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[P
             return _preorder_traverse(node=tree.root)
         return _preorder_traverse_non_recursive(root=tree.root)
     return None
-
-
-@overload
-def postorder_traverse(tree: None, recursive: bool = True) -> None:
-    """`postorder_traverse` interface for an empty tree."""
-    ...
-
-
-@overload
-def postorder_traverse(
-    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
-) -> Pairs:
-    """`postorder_traverse` interface for a `BinarySearchTree`."""
-    ...
 
 
 def postorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[Pairs]:
@@ -195,20 +153,6 @@ def postorder_traverse(tree: SupportedTree, recursive: bool = True) -> Optional[
     return None
 
 
-@overload
-def reverse_inorder_traverse(tree: None, recursive: bool = True) -> None:
-    """`reverse_inorder_traverse` interface for an empty tree."""
-    ...
-
-
-@overload
-def reverse_inorder_traverse(
-    tree: binary_search_tree.BinarySearchTree, recursive: bool = True
-) -> Pairs:
-    """`reverse_inorder_traverse` interface for a `BinarySearchTree`."""
-    ...
-
-
 def reverse_inorder_traverse(
     tree: SupportedTree, recursive: bool = True
 ) -> Optional[Pairs]:
@@ -254,18 +198,6 @@ def reverse_inorder_traverse(
             return _reverse_inorder_traverse(node=tree.root)
         return _reverse_inorder_traverse_non_recursive(root=tree.root)
     return None
-
-
-@overload
-def levelorder_traverse(tree: None) -> None:
-    """`leverorder_traverse` interface for an empty tree."""
-    ...
-
-
-@overload
-def levelorder_traverse(tree: binary_search_tree.BinarySearchTree) -> Pairs:
-    """`levelorder_traverse` interface for a `BinarySearchTree`."""
-    ...
 
 
 def levelorder_traverse(tree: SupportedTree) -> Optional[Pairs]:

@@ -7,6 +7,7 @@
 from typing import Any, Optional
 
 from forest.binary_trees import binary_search_tree
+from forest.binary_trees import traversal
 
 
 class Map:
@@ -29,6 +30,10 @@ class Map:
     def __delitem__(self, key: Any) -> None:
         """Remove a (key, value) pair from the map."""
         self._bst.delete(key=key)
+
+    def __iter__(self) -> traversal.Pairs:
+        """Iterate the data in the map."""
+        return traversal.inorder_traverse(tree=self._bst)
 
     @property
     def empty(self) -> bool:
@@ -54,3 +59,7 @@ if __name__ == "__main__":
 
     # Check the deleted item.
     print(contacts["John"])  # This will print None
+
+    # Iterate the items.
+    for contact in contacts:
+        print(contact)

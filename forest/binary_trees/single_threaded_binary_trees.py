@@ -195,7 +195,7 @@ class RightThreadedBinaryTree:
 
                 replacing_node: Node = self.get_leftmost(node=deleting_node.right)
 
-                # the minmum node is not the direct child of the deleting node
+                # the leftmost node is not the direct child of the deleting node
                 if replacing_node.parent != deleting_node:
                     if replacing_node.isThread:
                         self._transplant(

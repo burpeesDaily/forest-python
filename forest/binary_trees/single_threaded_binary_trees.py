@@ -21,7 +21,7 @@ class Node:
     left: Optional["Node"] = None
     right: Optional["Node"] = None
     parent: Optional["Node"] = None
-    isThread: bool = False
+    is_thread: bool = False
 
 
 class RightThreadedBinaryTree:
@@ -96,7 +96,7 @@ class RightThreadedBinaryTree:
             elif key < current.key:
                 current = current.left
             else:  # key > current.key
-                if current.isThread:
+                if current.is_thread:
                     break
                 current = current.right
         return None
@@ -127,7 +127,7 @@ class RightThreadedBinaryTree:
                 current = current.left
             elif new_node.key > current.key:
                 # If the node is thread, meaning it's a leaf node.
-                if current.isThread:
+                if current.is_thread:
                     current = None
                 else:
                     current = current.right
@@ -142,13 +142,13 @@ class RightThreadedBinaryTree:
 
             # Update thread
             new_node.right = parent
-            new_node.isThread = True
+            new_node.is_thread = True
 
         else:
             # Update thread
-            new_node.isThread = parent.isThread
+            new_node.is_thread = parent.is_thread
             new_node.right = parent.right
-            parent.isThread = False
+            parent.is_thread = False
             # Parent's right must be set after thread update
             parent.right = new_node
 
@@ -160,24 +160,22 @@ class RightThreadedBinaryTree:
         key: `Any`
             The key of the node to be deleted.
         """
-        deleting_node = self.search(key=key)
+        if self.root and (deleting_node := self.search(key=key)):
 
-        if deleting_node:
-
-            # The deleting node has no child
+            # Case 1: no child
             if deleting_node.left is None and (
-                deleting_node.right is None or deleting_node.isThread
+                deleting_node.right is None or deleting_node.is_thread
             ):
                 self._transplant(deleting_node=deleting_node, replacing_node=None)
 
-            # The deleting node has only one right child
-            elif deleting_node.left is None and deleting_node.isThread is False:
+            # Case 2a: only one right child
+            elif deleting_node.left is None and deleting_node.is_thread is False:
                 self._transplant(
                     deleting_node=deleting_node, replacing_node=deleting_node.right
                 )
 
-            # The deleting node has only one left child,
-            elif deleting_node.left and deleting_node.isThread:
+            # Case 2b: only one left left child
+            elif deleting_node.left and deleting_node.is_thread:
                 predecessor = self.get_predecessor(node=deleting_node)
                 if predecessor:
                     predecessor.right = deleting_node.right
@@ -185,19 +183,17 @@ class RightThreadedBinaryTree:
                     deleting_node=deleting_node, replacing_node=deleting_node.left
                 )
 
-            # The deleting node has two children
+            # Case 3: two children
             elif (
                 deleting_node.left
                 and deleting_node.right
-                and deleting_node.isThread is False
+                and deleting_node.is_thread is False
             ):
                 predecessor = self.get_predecessor(node=deleting_node)
-
                 replacing_node: Node = self.get_leftmost(node=deleting_node.right)
-
-                # the minmum node is not the direct child of the deleting node
+                # the leftmost node is not the direct child of the deleting node
                 if replacing_node.parent != deleting_node:
-                    if replacing_node.isThread:
+                    if replacing_node.is_thread:
                         self._transplant(
                             deleting_node=replacing_node, replacing_node=None
                         )
@@ -208,14 +204,14 @@ class RightThreadedBinaryTree:
                         )
                     replacing_node.right = deleting_node.right
                     replacing_node.right.parent = replacing_node
-                    replacing_node.isThread = False
+                    replacing_node.is_thread = False
 
                 self._transplant(
                     deleting_node=deleting_node, replacing_node=replacing_node
                 )
                 replacing_node.left = deleting_node.left
                 replacing_node.left.parent = replacing_node
-                if predecessor and predecessor.isThread:
+                if predecessor and predecessor.is_thread:
                     predecessor.right = replacing_node
             else:
                 raise RuntimeError("Invalid case. Should never happened")
@@ -238,7 +234,6 @@ class RightThreadedBinaryTree:
             the given node.
         """
         current_node = node
-
         while current_node.left:
             current_node = current_node.left
         return current_node
@@ -262,7 +257,7 @@ class RightThreadedBinaryTree:
         """
         current_node = node
 
-        while current_node.isThread is False and current_node.right:
+        while current_node.is_thread is False and current_node.right:
             current_node = current_node.right
         return current_node
 
@@ -280,7 +275,7 @@ class RightThreadedBinaryTree:
         `Optional[Node]`
             The successor node.
         """
-        if node.isThread:
+        if node.is_thread:
             return node.right
         else:
             if node.right:
@@ -311,7 +306,7 @@ class RightThreadedBinaryTree:
         return parent
 
     @staticmethod
-    def get_height(node: Optional[Node]) -> int:
+    def get_height(node: Node) -> int:
         """Get the height of the given subtree.
 
         Parameters
@@ -324,19 +319,22 @@ class RightThreadedBinaryTree:
         `int`
             The height of the given subtree. 0 if the subtree has only one node.
         """
-        if node is None:
-            return 0
-
-        if node.left is None and node.isThread:
-            return 0
-
-        return (
-            max(
-                RightThreadedBinaryTree.get_height(node.left),
-                RightThreadedBinaryTree.get_height(node.right),
+        if node.left and node.is_thread is False:
+            return (
+                max(
+                    RightThreadedBinaryTree.get_height(node.left),
+                    RightThreadedBinaryTree.get_height(node.right),  # type: ignore
+                )
+                + 1
             )
-            + 1
-        )
+
+        if node.left:
+            return RightThreadedBinaryTree.get_height(node=node.left) + 1
+
+        if node.is_thread is False:
+            return RightThreadedBinaryTree.get_height(node=node.right) + 1  # type: ignore # noqa: E501
+
+        return 0
 
     def inorder_traverse(self) -> traversal.Pairs:
         """Use the right threads to traverse the tree in in-order order.
@@ -351,7 +349,7 @@ class RightThreadedBinaryTree:
             while current:
                 yield (current.key, current.data)
 
-                if current.isThread:
+                if current.is_thread:
                     current = current.right
                 else:
                     if current.right is None:
@@ -370,7 +368,7 @@ class RightThreadedBinaryTree:
         while current:
             yield (current.key, current.data)
 
-            if current.isThread:
+            if current.is_thread:
                 # If a node is thread, it must have a right child.
                 current = current.right.right  # type: ignore
             else:
@@ -380,22 +378,22 @@ class RightThreadedBinaryTree:
         if deleting_node.parent is None:
             self.root = replacing_node
             if self.root:
-                self.root.isThread = False
+                self.root.is_thread = False
         elif deleting_node == deleting_node.parent.left:
             deleting_node.parent.left = replacing_node
             if replacing_node:
-                if deleting_node.isThread:
-                    if replacing_node.isThread:
+                if deleting_node.is_thread:
+                    if replacing_node.is_thread:
                         replacing_node.right = replacing_node.right
         else:  # deleting_node == deleting_node.parent.right
             deleting_node.parent.right = replacing_node
             if replacing_node:
-                if deleting_node.isThread:
-                    if replacing_node.isThread:
+                if deleting_node.is_thread:
+                    if replacing_node.is_thread:
                         replacing_node.right = replacing_node.right
             else:
                 deleting_node.parent.right = deleting_node.right
-                deleting_node.parent.isThread = True
+                deleting_node.parent.is_thread = True
 
         if replacing_node:
             replacing_node.parent = deleting_node.parent
@@ -470,7 +468,7 @@ class LeftThreadedBinaryTree:
             if key == current.key:
                 return current
             elif key < current.key:
-                if current.isThread is False:
+                if current.is_thread is False:
                     current = current.left
                 else:
                     break
@@ -502,7 +500,7 @@ class LeftThreadedBinaryTree:
             parent = current
             if new_node.key < current.key:
                 # If the node is thread, meaning it's a leaf node.
-                if current.isThread:
+                if current.is_thread:
                     current = None
                 else:
                     current = current.left
@@ -519,13 +517,13 @@ class LeftThreadedBinaryTree:
 
             # Update thread
             new_node.left = parent
-            new_node.isThread = True
+            new_node.is_thread = True
 
         else:
             # Update thread
-            new_node.isThread = parent.isThread
+            new_node.is_thread = parent.is_thread
             new_node.left = parent.left
-            parent.isThread = False
+            parent.is_thread = False
             # Parent's left must be set after thread update
             parent.left = new_node
 
@@ -537,18 +535,16 @@ class LeftThreadedBinaryTree:
         key: `Any`
             The key of the node to be deleted.
         """
-        deleting_node = self.search(key=key)
+        if self.root and (deleting_node := self.search(key=key)):
 
-        if deleting_node:
-
-            # The deleting node has no child
+            # Case 1: no child
             if deleting_node.right is None and (
-                deleting_node.left is None or deleting_node.isThread
+                deleting_node.left is None or deleting_node.is_thread
             ):
                 self._transplant(deleting_node=deleting_node, replacing_node=None)
 
-            # The deleting node has only one right child,
-            elif deleting_node.right and deleting_node.isThread:
+            # Case 2a: only one right child
+            elif deleting_node.right and deleting_node.is_thread:
                 successor = self.get_successor(node=deleting_node)
                 if successor:
                     successor.left = deleting_node.left
@@ -556,21 +552,19 @@ class LeftThreadedBinaryTree:
                     deleting_node=deleting_node, replacing_node=deleting_node.right
                 )
 
-            # The deleting node has only one left child
-            elif (deleting_node.right is None) and (deleting_node.isThread is False):
+            # Case 2b: only one left left child
+            elif (deleting_node.right is None) and (deleting_node.is_thread is False):
                 self._transplant(
                     deleting_node=deleting_node, replacing_node=deleting_node.left
                 )
 
-            # The deleting node has two children
+            # Case 3: two children
             elif deleting_node.right and deleting_node.left:
                 replacing_node: Node = self.get_leftmost(node=deleting_node.right)
-
                 successor = self.get_successor(node=replacing_node)
-
                 # the minmum node is not the direct child of the deleting node
                 if replacing_node.parent != deleting_node:
-                    if replacing_node.isThread:
+                    if replacing_node.is_thread:
                         self._transplant(
                             deleting_node=replacing_node, replacing_node=None
                         )
@@ -587,8 +581,8 @@ class LeftThreadedBinaryTree:
                 )
                 replacing_node.left = deleting_node.left
                 replacing_node.left.parent = replacing_node
-                replacing_node.isThread = False
-                if successor and successor.isThread:
+                replacing_node.is_thread = False
+                if successor and successor.is_thread:
                     successor.left = replacing_node
             else:
                 raise RuntimeError("Invalid case. Should never happened")
@@ -612,7 +606,7 @@ class LeftThreadedBinaryTree:
         """
         current_node = node
 
-        while current_node.left and current_node.isThread is False:
+        while current_node.left and current_node.is_thread is False:
             current_node = current_node.left
         return current_node
 
@@ -634,10 +628,8 @@ class LeftThreadedBinaryTree:
             the given node.
         """
         current_node = node
-
-        if current_node:
-            while current_node.right:
-                current_node = current_node.right
+        while current_node.right:
+            current_node = current_node.right
         return current_node
 
     @staticmethod
@@ -676,7 +668,7 @@ class LeftThreadedBinaryTree:
         `Optional[Node]`
             The predecessor node.
         """
-        if node.isThread:
+        if node.is_thread:
             return node.left
         else:
             if node.left:
@@ -685,7 +677,7 @@ class LeftThreadedBinaryTree:
             return None
 
     @staticmethod
-    def get_height(node: Optional[Node]) -> int:
+    def get_height(node: Node) -> int:
         """Get the height of the given subtree.
 
         Parameters
@@ -698,19 +690,22 @@ class LeftThreadedBinaryTree:
         `int`
             The height of the given subtree. 0 if the subtree has only one node.
         """
-        if node is None:
-            return 0
-
-        if node.isThread and node.right is None:
-            return 0
-
-        return (
-            max(
-                LeftThreadedBinaryTree.get_height(node.left),
-                LeftThreadedBinaryTree.get_height(node.right),
+        if node.right and node.is_thread is False:
+            return (
+                max(
+                    LeftThreadedBinaryTree.get_height(node.left),  # type: ignore
+                    LeftThreadedBinaryTree.get_height(node.right),
+                )
+                + 1
             )
-            + 1
-        )
+
+        if node.right:
+            return LeftThreadedBinaryTree.get_height(node=node.right) + 1
+
+        if node.is_thread is False:
+            return LeftThreadedBinaryTree.get_height(node=node.left) + 1  # type: ignore # noqa: E501
+
+        return 0
 
     def reverse_inorder_traverse(self) -> traversal.Pairs:
         """Use the left threads to traverse the tree in reversed in-order.
@@ -725,7 +720,7 @@ class LeftThreadedBinaryTree:
             while current:
                 yield (current.key, current.data)
 
-                if current.isThread:
+                if current.is_thread:
                     current = current.left
                 else:
                     if current.left is None:
@@ -736,21 +731,21 @@ class LeftThreadedBinaryTree:
         if deleting_node.parent is None:
             self.root = replacing_node
             if self.root:
-                self.root.isThread = False
+                self.root.is_thread = False
         elif deleting_node == deleting_node.parent.left:
             deleting_node.parent.left = replacing_node
             if replacing_node:
-                if deleting_node.isThread:
-                    if replacing_node.isThread:
+                if deleting_node.is_thread:
+                    if replacing_node.is_thread:
                         replacing_node.left = deleting_node.left
             else:
                 deleting_node.parent.left = deleting_node.left
-                deleting_node.parent.isThread = True
+                deleting_node.parent.is_thread = True
         else:  # deleting_node == deleting_node.parent.right
             deleting_node.parent.right = replacing_node
             if replacing_node:
-                if deleting_node.isThread:
-                    if replacing_node.isThread:
+                if deleting_node.is_thread:
+                    if replacing_node.is_thread:
                         replacing_node.left = deleting_node.left
 
         if replacing_node:

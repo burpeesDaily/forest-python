@@ -172,8 +172,7 @@ class DoubleThreadedBinaryTree:
         key: `Any`
             The key of the node to be deleted.
         """
-        if self.root:
-            deleting_node = self.search(key=key)
+        if self.root and (deleting_node := self.search(key=key)):
 
             # The deleting node has no child
             if (deleting_node.left_thread or deleting_node.left is None) and \
@@ -362,7 +361,8 @@ class DoubleThreadedBinaryTree:
             yield (current.key, current.data)
 
             if current.right_thread:
-                current = current.right.right
+                # If it is right thread, it must have a right child.
+                current = current.right.right  # type: ignore
             elif current.left_thread is False:
                 current = current.left
             else:
@@ -411,7 +411,7 @@ class DoubleThreadedBinaryTree:
                     current = self.get_rightmost(current.left)
 
     def _transplant(self, deleting_node: Node,
-                    replacing_node: Optional[Node]):
+                    replacing_node: Optional[Node]) -> None:
         if deleting_node.parent is None:
             self.root = replacing_node
             if self.root:

@@ -174,13 +174,13 @@ class DoubleThreadedBinaryTree:
         """
         if self.root and (deleting_node := self.search(key=key)):
 
-            # The deleting node has no child
+            # Case 1: no child
             if (deleting_node.left_thread or deleting_node.left is None) and (
                 deleting_node.right_thread or deleting_node.right is None
             ):
                 self._transplant(deleting_node=deleting_node, replacing_node=None)
 
-            # The deleting node has only one right child
+            # Case 2a: only one right child
             elif (
                 deleting_node.left_thread or deleting_node.left is None
             ) and deleting_node.right_thread is False:
@@ -192,7 +192,7 @@ class DoubleThreadedBinaryTree:
                     deleting_node=deleting_node, replacing_node=deleting_node.right
                 )
 
-            # The deleting node has only one left child,
+            # Case 2b: only one left child,
             elif (
                 deleting_node.right_thread or deleting_node.right is None
             ) and deleting_node.left_thread is False:
@@ -204,7 +204,7 @@ class DoubleThreadedBinaryTree:
                     deleting_node=deleting_node, replacing_node=deleting_node.left
                 )
 
-            # The deleting node has two children
+            # Case 3: two children
             elif deleting_node.left and deleting_node.right:
                 predecessor = self.get_predecessor(node=deleting_node)
 
@@ -212,7 +212,7 @@ class DoubleThreadedBinaryTree:
 
                 successor = self.get_successor(node=replacing_node)
 
-                # the minmum node is not the direct child of the deleting node
+                # the leftmost node is not the direct child of the deleting node
                 if replacing_node.parent != deleting_node:
                     if replacing_node.right_thread:
                         self._transplant(

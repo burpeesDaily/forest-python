@@ -174,7 +174,7 @@ class RightThreadedBinaryTree:
                     deleting_node=deleting_node, replacing_node=deleting_node.right
                 )
 
-            # Case 2b: only one left left child
+            # Case 2b: only one left child
             elif deleting_node.left and deleting_node.is_thread:
                 predecessor = self.get_predecessor(node=deleting_node)
                 if predecessor:

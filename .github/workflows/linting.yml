@@ -21,8 +21,6 @@ jobs:
         pip install -r requirements.txt
     - name: Format with black
       uses: psf/black@stable
-        with:
-          args: ". --check"
     - name: Linting with flake8
       run: flake8 **/*.py
     - name: Type checking with mypy

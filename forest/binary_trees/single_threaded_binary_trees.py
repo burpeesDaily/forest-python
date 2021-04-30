@@ -75,6 +75,16 @@ class RightThreadedBinaryTree:
             )
         return "empty tree"
 
+    @property
+    def empty(self) -> bool:
+        """bool: `True` if the tree is empty; `False` otherwise.
+
+        Notes
+        -----
+        The property, `empty`, is read-only.
+        """
+        return self.root is None
+
     def search(self, key: Any) -> Optional[Node]:
         """Look for a node by a given key.
 
@@ -447,6 +457,16 @@ class LeftThreadedBinaryTree:
                 f"tree_height={str(self.get_height(self.root))}"
             )
         return "empty tree"
+
+    @property
+    def empty(self) -> bool:
+        """bool: `True` if the tree is empty; `False` otherwise.
+
+        Notes
+        -----
+        The property, `empty`, is read-only.
+        """
+        return self.root is None
 
     def search(self, key: Any) -> Optional[Node]:
         """Look for a node by a given key.

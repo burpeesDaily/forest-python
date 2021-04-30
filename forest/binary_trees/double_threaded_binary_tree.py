@@ -77,6 +77,16 @@ class DoubleThreadedBinaryTree:
             )
         return "empty tree"
 
+    @property
+    def empty(self) -> bool:
+        """bool: `True` if the tree is empty; `False` otherwise.
+
+        Notes
+        -----
+        The property, `empty`, is read-only.
+        """
+        return self.root is None
+
     def search(self, key: Any) -> Optional[Node]:
         """Look for a node by a given key.
 

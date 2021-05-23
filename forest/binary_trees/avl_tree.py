@@ -7,6 +7,8 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
+from forest import tree_exceptions
+
 
 @dataclass
 class Node:
@@ -116,7 +118,34 @@ class AVLTree:
         `DuplicateKeyError`
             Raised if the key to be insted has existed in the tree.
         """
-        pass
+        new_node = Node(key=key, data=data)
+        parent: Optional[Node] = None
+        current: Optional[Node] = self.root
+        while current:
+            parent = current
+            if new_node.key < current.key:
+                current = current.left
+            elif new_node.key > current.key:
+                current = current.right
+            else:
+                raise tree_exceptions.DuplicateKeyError(key=new_node.key)
+        new_node.parent = parent
+        # If the tree is empty, set the new node to be the root.
+        if parent is None:
+            self.root = new_node
+        else:
+            if new_node.key < parent.key:
+                parent.left = new_node
+            else:
+                parent.right = new_node
+
+            # After the insertion, fix the broken AVL-tree-property.
+            # If the parenet has two children after inseting the new node,
+            # it means the parent had one child before the insertion.
+            # In this case, neither AVL-tree property breaks nor
+            # heights update requires.
+            if not (parent.left and parent.right):
+                self._insert_fixup(new_node)
 
     def delete(self, key: Any) -> None:
         """Delete a node according to the given key.
@@ -219,7 +248,7 @@ class AVLTree:
         return parent
 
     @staticmethod
-    def get_height(node: Node) -> int:
+    def get_height(node: Optional[Node]) -> int:
         """Get the height of the given subtree.
 
         Parameters
@@ -232,4 +261,107 @@ class AVLTree:
         `int`
             The height of the given subtree. 0 if the subtree has only one node.
         """
-        return node.height
+        if node:
+            return node.height
+        # None has height -1
+        return -1
+
+    def _get_balance_factor(self, node: Optional[Node]) -> int:
+        if node:
+            return self.get_height(node.left) - self.get_height(node.right)
+        # Empty node's height is -1
+        return -1
+
+    def _left_rotate(self, node_x: Node) -> None:
+        node_y = node_x.right  # Set node y
+        if node_y:
+            # Turn node y's subtree into node x's subtree
+            node_x.right = node_y.left
+            if node_y.left:
+                node_y.left.parent = node_x
+            node_y.parent = node_x.parent
+
+            # If node's parent is a Leaf, node y becomes the new root.
+            if node_x.parent is None:
+                self.root = node_y
+            # Otherwise, update node x's parent.
+            elif node_x == node_x.parent.left:
+                node_x.parent.left = node_y
+            else:
+                node_x.parent.right = node_y
+
+            node_y.left = node_x
+            node_x.parent = node_y
+
+            node_x.height = 1 + max(
+                self.get_height(node_x.left), self.get_height(node_x.right)
+            )
+            node_y.height = 1 + max(
+                self.get_height(node_y.left), self.get_height(node_y.right)
+            )
+
+    def _right_rotate(self, node_x: Node) -> None:
+        node_y = node_x.left  # Set node y
+        if node_y:
+            # Turn node y's subtree into node x's subtree
+            node_x.left = node_y.right
+            if node_y.right:
+                node_y.right.parent = node_x
+            node_y.parent = node_x.parent
+
+            # If node's parent is a Leaf, node y becomes the new root.
+            if node_x.parent is None:
+                self.root = node_y
+            # Otherwise, update node x's parent.
+            elif node_x == node_x.parent.right:
+                node_x.parent.right = node_y
+            else:
+                node_x.parent.left = node_y
+
+            node_y.right = node_x
+            node_x.parent = node_y
+
+            node_x.height = 1 + max(
+                self.get_height(node_x.left), self.get_height(node_x.right)
+            )
+            node_y.height = 1 + max(
+                self.get_height(node_y.left), self.get_height(node_y.right)
+            )
+
+    def _insert_fixup(self, new_node: Node) -> None:
+        parent = new_node.parent
+
+        while parent:
+            parent.height = 1 + max(
+                self.get_height(parent.left), self.get_height(parent.right)
+            )
+
+            grandparent = parent.parent
+            # grandparent is unbalanced
+            if grandparent:
+                if self._get_balance_factor(grandparent) > 1:
+                    # Case Left-Left
+                    if self._get_balance_factor(parent) > 0:
+                        self._right_rotate(grandparent)
+                    # Case Left-Right
+                    if self._get_balance_factor(parent) < 0:
+                        self._left_rotate(parent)
+                        self._right_rotate(grandparent)
+                    # Since the fixup does not affect the ancestor of the unbalanced
+                    # node, exit the loop to complete the fixup process.
+                    break
+                elif self._get_balance_factor(grandparent) < -1:
+                    # Case Right-Right
+                    if self._get_balance_factor(parent) < 0:
+                        self._left_rotate(grandparent)
+                    # Case Right-Left
+                    if self._get_balance_factor(parent) > 0:
+                        self._right_rotate(parent)
+                        self._left_rotate(grandparent)
+                    # Since the fixup does not affect the ancestor of the unbalanced
+                    # node, exit the loop to complete the fixup process.
+                    break
+            parent = parent.parent
+
+    def _delete_fixup(self, fixing_node: Node) -> None:
+        pass

@@ -219,3 +219,77 @@ def test_deletion(basic_tree):
         (30, "30"),
         (34, "34"),
     ]
+
+
+def test_delete_two_children_1():
+    """Test the two children deletion."""
+    tree = avl_tree.AVLTree()
+
+    test_tree = [
+        (37, "37"),
+        (29, "29"),
+        (55, "55"),
+        (17, "17"),
+        (41, "41"),
+        (63, "63"),
+        (57, "57"),
+    ]
+
+    for key, data in test_tree:
+        tree.insert(key=key, data=data)
+
+    tree.delete(key=37)
+    assert [item for item in traversal.inorder_traverse(tree)] == [
+        (17, "17"),
+        (29, "29"),
+        (41, "41"),
+        (55, "55"),
+        (57, "57"),
+        (63, "63"),
+    ]
+
+    assert [item for item in traversal.preorder_traverse(tree)] == [
+        (41, "41"),
+        (29, "29"),
+        (17, "17"),
+        (57, "57"),
+        (55, "55"),
+        (63, "63"),
+    ]
+
+
+def test_delete_two_children_2():
+    """Test the two children deletion."""
+    tree = avl_tree.AVLTree()
+
+    test_tree = [
+        (37, "37"),
+        (29, "29"),
+        (55, "55"),
+        (17, "17"),
+        (35, "35"),
+        (63, "63"),
+        (31, "31"),
+    ]
+
+    for key, data in test_tree:
+        tree.insert(key=key, data=data)
+
+    tree.delete(key=37)
+    assert [item for item in traversal.inorder_traverse(tree)] == [
+        (17, "17"),
+        (29, "29"),
+        (31, "31"),
+        (35, "35"),
+        (55, "55"),
+        (63, "63"),
+    ]
+
+    assert [item for item in traversal.preorder_traverse(tree)] == [
+        (35, "35"),
+        (29, "29"),
+        (17, "17"),
+        (31, "31"),
+        (55, "55"),
+        (63, "63"),
+    ]

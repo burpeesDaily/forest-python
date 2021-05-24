@@ -155,7 +155,40 @@ class AVLTree:
         key: `Any`
             The key of the node to be deleted.
         """
-        pass
+        if self.root and (deleting_node := self.search(key=key)):
+
+            # Case: no child
+            if (deleting_node.left is None) and (deleting_node.right is None):
+                self._delete_no_child(deleting_node=deleting_node)
+            # Caes: Two children
+            elif deleting_node.left and deleting_node.right:
+                replacing_node = self.get_leftmost(node=deleting_node.right)
+                # Replace the deleting node with the replacing node,
+                # but keep the replacing node in place.
+                deleting_node.key = replacing_node.key
+                deleting_node.data = replacing_node.data
+                if replacing_node.right:  # The replacing node cannot have left child.
+                    self._delete_one_child(deleting_node=replacing_node)
+                else:
+                    self._delete_no_child(deleting_node=replacing_node)
+            # Case: one child
+            else:
+                self._delete_one_child(deleting_node=deleting_node)
+
+    def _delete_no_child(self, deleting_node: Node) -> None:
+        parent = deleting_node.parent
+        self._transplant(deleting_node=deleting_node, replacing_node=None)
+        if parent:
+            self._delete_fixup(fixing_node=parent)
+
+    def _delete_one_child(self, deleting_node: Node) -> None:
+        parent = deleting_node.parent
+        replacing_node = (
+            deleting_node.right if deleting_node.right else deleting_node.left
+        )
+        self._transplant(deleting_node=deleting_node, replacing_node=replacing_node)
+        if parent:
+            self._delete_fixup(fixing_node=parent)
 
     @staticmethod
     def get_leftmost(node: Node) -> Node:
@@ -341,10 +374,10 @@ class AVLTree:
             if grandparent:
                 if self._get_balance_factor(grandparent) > 1:
                     # Case Left-Left
-                    if self._get_balance_factor(parent) > 0:
+                    if self._get_balance_factor(parent) >= 0:
                         self._right_rotate(grandparent)
                     # Case Left-Right
-                    if self._get_balance_factor(parent) < 0:
+                    elif self._get_balance_factor(parent) < 0:
                         self._left_rotate(parent)
                         self._right_rotate(grandparent)
                     # Since the fixup does not affect the ancestor of the unbalanced
@@ -352,10 +385,10 @@ class AVLTree:
                     break
                 elif self._get_balance_factor(grandparent) < -1:
                     # Case Right-Right
-                    if self._get_balance_factor(parent) < 0:
+                    if self._get_balance_factor(parent) <= 0:
                         self._left_rotate(grandparent)
                     # Case Right-Left
-                    if self._get_balance_factor(parent) > 0:
+                    elif self._get_balance_factor(parent) > 0:
                         self._right_rotate(parent)
                         self._left_rotate(grandparent)
                     # Since the fixup does not affect the ancestor of the unbalanced
@@ -363,5 +396,43 @@ class AVLTree:
                     break
             parent = parent.parent
 
+    def _transplant(self, deleting_node: Node, replacing_node: Optional[Node]) -> None:
+
+        if deleting_node.parent is None:
+            self.root = replacing_node
+        elif deleting_node == deleting_node.parent.left:
+            deleting_node.parent.left = replacing_node
+        else:
+            deleting_node.parent.right = replacing_node
+
+        if replacing_node:
+            replacing_node.parent = deleting_node.parent
+
     def _delete_fixup(self, fixing_node: Node) -> None:
-        pass
+
+        while fixing_node:
+            fixing_node.height = 1 + max(
+                self.get_height(fixing_node.left), self.get_height(fixing_node.right)
+            )
+
+            if self._get_balance_factor(fixing_node) > 1:
+                # Case Left-Left
+                if self._get_balance_factor(fixing_node.left) >= 0:
+                    self._right_rotate(fixing_node)
+                # Case Left-Right
+                elif self._get_balance_factor(fixing_node.left) < 0:
+                    # The fixing node's left child cannot be empty
+                    self._left_rotate(fixing_node.left)  # type: ignore
+                    self._right_rotate(fixing_node)
+
+            elif self._get_balance_factor(fixing_node) < -1:
+                # Case Right-Right
+                if self._get_balance_factor(fixing_node.right) <= 0:
+                    self._left_rotate(fixing_node)
+                # Case Right-Left
+                elif self._get_balance_factor(fixing_node.right) > 0:
+                    # The fixing node's right child cannot be empty
+                    self._right_rotate(fixing_node.right)  # type: ignore
+                    self._left_rotate(fixing_node)
+
+            fixing_node = fixing_node.parent  # type: ignore

@@ -46,7 +46,7 @@ class RBTree:
     Attributes
     ----------
     root: `Union[Node, Leaf]`
-        The root node of the left threaded binary search tree.
+        The root node of the red-black tree.
     empty: `bool`
         `True` if the tree is empty; `False` otherwise.
 
@@ -56,9 +56,9 @@ class RBTree:
     search(key: `Any`)
         Look for a node based on the given key.
     insert(key: `Any`, data: `Any`)
-        Insert a (key, data) pair into a binary tree.
+        Insert a (key, data) pair into a red-black tree.
     delete(key: `Any`)
-        Delete a node based on the given key from the binary tree.
+        Delete a node based on the given key from the red-black tree.
 
     Auxiliary Functions
     get_leftmost(node: `Node`)
@@ -131,7 +131,7 @@ class RBTree:
         return None
 
     def insert(self, key: Any, data: Any) -> None:
-        """Insert a (key, data) pair into the binary search tree.
+        """Insert a (key, data) pair into the red-black tree.
 
         Parameters
         ----------

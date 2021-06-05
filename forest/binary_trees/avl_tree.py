@@ -175,21 +175,6 @@ class AVLTree:
             else:
                 self._delete_one_child(deleting_node=deleting_node)
 
-    def _delete_no_child(self, deleting_node: Node) -> None:
-        parent = deleting_node.parent
-        self._transplant(deleting_node=deleting_node, replacing_node=None)
-        if parent:
-            self._delete_fixup(fixing_node=parent)
-
-    def _delete_one_child(self, deleting_node: Node) -> None:
-        parent = deleting_node.parent
-        replacing_node = (
-            deleting_node.right if deleting_node.right else deleting_node.left
-        )
-        self._transplant(deleting_node=deleting_node, replacing_node=replacing_node)
-        if parent:
-            self._delete_fixup(fixing_node=parent)
-
     @staticmethod
     def get_leftmost(node: Node) -> Node:
         """Return the leftmost node from a given subtree.
@@ -395,6 +380,21 @@ class AVLTree:
                     # node, exit the loop to complete the fixup process.
                     break
             parent = parent.parent
+
+    def _delete_no_child(self, deleting_node: Node) -> None:
+        parent = deleting_node.parent
+        self._transplant(deleting_node=deleting_node, replacing_node=None)
+        if parent:
+            self._delete_fixup(fixing_node=parent)
+
+    def _delete_one_child(self, deleting_node: Node) -> None:
+        parent = deleting_node.parent
+        replacing_node = (
+            deleting_node.right if deleting_node.right else deleting_node.left
+        )
+        self._transplant(deleting_node=deleting_node, replacing_node=replacing_node)
+        if parent:
+            self._delete_fixup(fixing_node=parent)
 
     def _transplant(self, deleting_node: Node, replacing_node: Optional[Node]) -> None:
 

@@ -7,11 +7,12 @@
 from typing import Any, Iterator, Union
 
 from forest.binary_trees import binary_search_tree
+from forest.binary_trees import avl_tree
 
 # Alisa for the supported node types. For type checking.
-SupportedNode = Union[None, binary_search_tree.Node]
+SupportedNode = Union[None, binary_search_tree.Node, avl_tree.Node]
 
-SupportedTree = Union[binary_search_tree.BinarySearchTree]
+SupportedTree = Union[binary_search_tree.BinarySearchTree, avl_tree.AVLTree]
 """Alisa for the supported tree types. For type checking."""
 
 Pairs = Iterator[tuple[Any, Any]]

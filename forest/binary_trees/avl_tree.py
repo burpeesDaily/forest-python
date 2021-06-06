@@ -140,7 +140,7 @@ class AVLTree:
                 parent.right = new_node
 
             # After the insertion, fix the broken AVL-tree-property.
-            # If the parenet has two children after inseting the new node,
+            # If the parent has two children after inserting the new node,
             # it means the parent had one child before the insertion.
             # In this case, neither AVL-tree property breaks nor
             # heights update requires.
@@ -160,7 +160,7 @@ class AVLTree:
             # Case: no child
             if (deleting_node.left is None) and (deleting_node.right is None):
                 self._delete_no_child(deleting_node=deleting_node)
-            # Caes: Two children
+            # Case: Two children
             elif deleting_node.left and deleting_node.right:
                 replacing_node = self.get_leftmost(node=deleting_node.right)
                 # Replace the deleting node with the replacing node,
@@ -397,7 +397,6 @@ class AVLTree:
             self._delete_fixup(fixing_node=parent)
 
     def _transplant(self, deleting_node: Node, replacing_node: Optional[Node]) -> None:
-
         if deleting_node.parent is None:
             self.root = replacing_node
         elif deleting_node == deleting_node.parent.left:

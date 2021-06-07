@@ -1,22 +1,40 @@
 """Unit tests for the red black tree module."""
 
+import pytest
+
+from forest import tree_exceptions
+
 from forest.binary_trees import red_black_tree
 
 
 def test_simple_case(basic_tree):
     """Test the basic operations of a red black tree."""
     tree = red_black_tree.RBTree()
+    assert tree.empty
 
     # 23, 4, 30, 11, 7, 34, 20, 24, 22, 15, 1
     for key, data in basic_tree:
         tree.insert(key=key, data=data)
 
+    assert tree.empty is False
+
+    with pytest.raises(tree_exceptions.DuplicateKeyError):
+        tree.insert(key=23, data="23")
+
+    assert tree.get_height(node=tree.root) == 3
     assert tree.get_leftmost(tree.root).key == 1
     assert tree.get_leftmost(tree.root).data == "1"
     assert tree.get_rightmost(tree.root).key == 34
     assert tree.get_rightmost(tree.root).data == "34"
     assert tree.search(24).key == 24
     assert tree.search(24).data == "24"
+    node = tree.search(7)
+    assert tree.get_successor(node).key == 11
+    assert tree.get_predecessor(node).key == 4
+    node = tree.search(15)
+    assert tree.get_successor(node).key == 20
+    node = tree.search(22)
+    assert tree.get_predecessor(node).key == 20
 
     tree.delete(15)
 

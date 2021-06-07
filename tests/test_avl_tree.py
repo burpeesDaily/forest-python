@@ -32,6 +32,12 @@ def test_simple_case(basic_tree):
     assert tree.get_predecessor(node).data == "7"
     assert tree.get_successor(node).key == 15
     assert tree.get_successor(node).data == "15"
+    node = tree.search(22)
+    assert tree.get_successor(node).key == 23
+    assert tree.get_successor(node).data == "23"
+    node = tree.search(24)
+    assert tree.get_predecessor(node).key == 23
+    assert tree.get_predecessor(node).data == "23"
     assert tree.search(24).key == 24
     assert tree.search(24).data == "24"
 

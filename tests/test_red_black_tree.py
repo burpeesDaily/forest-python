@@ -111,23 +111,45 @@ def test_deletion_fixup_1(basic_tree):
     """Test the deletion of a red black tree."""
     tree = red_black_tree.RBTree()
 
-    # 23, 4, 30, 11, 7, 34, 20, 24, 22, 15, 1
+    test_tree = [(23, "23"), (4, "4"), (30, "30"), (11, "11")]
+
+    for key, data in test_tree:
+        tree.insert(key=key, data=data)
+
+    tree.delete(4)
+    assert [item for item in tree.inorder_traverse()] == [
+        (11, "11"),
+        (23, "23"),
+        (30, "30"),
+    ]
+
+
+def test_deletion_fixup_2(basic_tree):
+    """Test the deletion of a red black tree."""
+    tree = red_black_tree.RBTree()
+
+    # 23, 4, 30, 11, 7, 34, 9
     test_tree = [
         (23, "23"),
         (4, "4"),
         (30, "30"),
-        (11, "11")
+        (11, "11"),
+        (7, "7"),
+        (34, "34"),
+        (9, "9"),
     ]
 
     for key, data in test_tree:
         tree.insert(key=key, data=data)
 
-    # No child
-    tree.delete(4)
+    tree.delete(11)
     assert [item for item in tree.inorder_traverse()] == [
-        (11, "11"),
+        (4, "4"),
+        (7, "7"),
+        (9, "9"),
         (23, "23"),
-        (30, "30")
+        (30, "30"),
+        (34, "34"),
     ]
 
 

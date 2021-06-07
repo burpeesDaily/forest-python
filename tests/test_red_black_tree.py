@@ -107,7 +107,7 @@ def test_deletion(basic_tree):
     ]
 
 
-def test_deletion_fixup_1(basic_tree):
+def test_deletion_no_child(basic_tree):
     """Test the deletion of a red black tree."""
     tree = red_black_tree.RBTree()
 
@@ -124,7 +124,7 @@ def test_deletion_fixup_1(basic_tree):
     ]
 
 
-def test_deletion_fixup_2(basic_tree):
+def test_deletion_one_child(basic_tree):
     """Test the deletion of a red black tree."""
     tree = red_black_tree.RBTree()
 
@@ -153,7 +153,7 @@ def test_deletion_fixup_2(basic_tree):
     ]
 
 
-def test_deletion_fixup_3(basic_tree):
+def test_deletion_two_children(basic_tree):
     """Test the deletion of a red black tree."""
     tree = red_black_tree.RBTree()
 
@@ -165,7 +165,7 @@ def test_deletion_fixup_3(basic_tree):
         (7, "7"),
         (34, "34"),
         (9, "9"),
-        (27, "27")
+        (27, "27"),
     ]
 
     for key, data in test_tree:

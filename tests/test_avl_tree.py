@@ -27,6 +27,11 @@ def test_simple_case(basic_tree):
     assert tree.get_leftmost(tree.root).data == "1"
     assert tree.get_rightmost(tree.root).key == 34
     assert tree.get_rightmost(tree.root).data == "34"
+    node = tree.search(11)
+    assert tree.get_predecessor(node).key == 7
+    assert tree.get_predecessor(node).data == "7"
+    assert tree.get_successor(node).key == 15
+    assert tree.get_successor(node).data == "15"
     assert tree.search(24).key == 24
     assert tree.search(24).data == "24"
 

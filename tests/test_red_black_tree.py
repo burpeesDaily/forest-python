@@ -107,6 +107,82 @@ def test_deletion(basic_tree):
     ]
 
 
+def test_deletion_no_child(basic_tree):
+    """Test the deletion of a red black tree."""
+    tree = red_black_tree.RBTree()
+
+    test_tree = [(23, "23"), (4, "4"), (30, "30"), (11, "11")]
+
+    for key, data in test_tree:
+        tree.insert(key=key, data=data)
+
+    tree.delete(4)
+    assert [item for item in tree.inorder_traverse()] == [
+        (11, "11"),
+        (23, "23"),
+        (30, "30"),
+    ]
+
+
+def test_deletion_one_child(basic_tree):
+    """Test the deletion of a red black tree."""
+    tree = red_black_tree.RBTree()
+
+    # 23, 4, 30, 11, 7, 34, 9
+    test_tree = [
+        (23, "23"),
+        (4, "4"),
+        (30, "30"),
+        (11, "11"),
+        (7, "7"),
+        (34, "34"),
+        (9, "9"),
+    ]
+
+    for key, data in test_tree:
+        tree.insert(key=key, data=data)
+
+    tree.delete(11)
+    assert [item for item in tree.inorder_traverse()] == [
+        (4, "4"),
+        (7, "7"),
+        (9, "9"),
+        (23, "23"),
+        (30, "30"),
+        (34, "34"),
+    ]
+
+
+def test_deletion_two_children(basic_tree):
+    """Test the deletion of a red black tree."""
+    tree = red_black_tree.RBTree()
+
+    test_tree = [
+        (23, "23"),
+        (4, "4"),
+        (30, "30"),
+        (11, "11"),
+        (7, "7"),
+        (34, "34"),
+        (9, "9"),
+        (27, "27"),
+    ]
+
+    for key, data in test_tree:
+        tree.insert(key=key, data=data)
+
+    tree.delete(23)
+    assert [item for item in tree.inorder_traverse()] == [
+        (4, "4"),
+        (7, "7"),
+        (9, "9"),
+        (11, "11"),
+        (27, "27"),
+        (30, "30"),
+        (34, "34"),
+    ]
+
+
 def test_red_black_tree_traversal(basic_tree):
     """Test red black tree traversal."""
     tree = red_black_tree.RBTree()

@@ -102,7 +102,7 @@ class RBTree:
         -----
         The property, `empty`, is read-only.
         """
-        return self.root is None
+        return self.root is self._NIL
 
     def search(self, key: Any) -> Optional[Node]:
         """Look for a node by a given key.

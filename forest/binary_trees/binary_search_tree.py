@@ -177,17 +177,6 @@ class BinarySearchTree:
                 replacing_node.left = deleting_node.left
                 replacing_node.left.parent = replacing_node
 
-    def _transplant(self, deleting_node: Node, replacing_node: Optional[Node]) -> None:
-        if deleting_node.parent is None:
-            self.root = replacing_node
-        elif deleting_node == deleting_node.parent.left:
-            deleting_node.parent.left = replacing_node
-        else:
-            deleting_node.parent.right = replacing_node
-
-        if replacing_node:
-            replacing_node.parent = deleting_node.parent
-
     @staticmethod
     def get_leftmost(node: Node) -> Node:
         """Return the leftmost node from a given subtree.
@@ -309,3 +298,14 @@ class BinarySearchTree:
 
         # If reach here, it means the node is a leaf node.
         return 0
+
+    def _transplant(self, deleting_node: Node, replacing_node: Optional[Node]) -> None:
+        if deleting_node.parent is None:
+            self.root = replacing_node
+        elif deleting_node == deleting_node.parent.left:
+            deleting_node.parent.left = replacing_node
+        else:
+            deleting_node.parent.right = replacing_node
+
+        if replacing_node:
+            replacing_node.parent = deleting_node.parent

@@ -10,6 +10,7 @@ from dataclasses import dataclass
 
 from typing import Any, Optional, Union
 
+from forest import metrics
 from forest import tree_exceptions
 from forest.binary_trees import traversal
 
@@ -81,9 +82,15 @@ class RBTree:
         Post-order traversal.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, registry: Optional[metrics.MetricsRegistry] = None) -> None:
         self._NIL: Leaf = Leaf()
         self.root: Union[Node, Leaf] = self._NIL
+        self._metrics_enabled = True if registry else False
+        if self._metrics_enabled and registry:
+            self._rotate_counter = metrics.Counter()
+            self._height_histogram = metrics.Histogram()
+            registry.register(name="rbt.rotate", metric=self._rotate_counter)
+            registry.register(name="rbt.height", metric=self._height_histogram)
 
     def __repr__(self) -> str:
         """Provie the tree representation to visualize its layout."""
@@ -172,6 +179,9 @@ class RBTree:
             # After the insertion, fix the broken red-black-tree-properties.
             self._insert_fixup(new_node)
 
+        if self._metrics_enabled:
+            self._height_histogram.update(value=self.get_height(self.root))
+
     def delete(self, key: Any) -> None:
         """Delete a node according to the given key.
 
@@ -204,7 +214,8 @@ class RBTree:
                 )
                 # Fixup
                 if original_color == Color.BLACK:
-                    self._delete_fixup(fixing_node=replacing_node)
+                    if isinstance(replacing_node, Node):
+                        self._delete_fixup(fixing_node=replacing_node)
 
             # Case 3: two children
             else:
@@ -225,6 +236,9 @@ class RBTree:
                 if original_color == Color.BLACK:
                     if isinstance(replacing_replacement, Node):
                         self._delete_fixup(fixing_node=replacing_replacement)
+
+        if self._metrics_enabled:
+            self._height_histogram.update(value=self.get_height(self.root))
 
     @staticmethod
     def get_height(node: Union[Leaf, Node]) -> int:
@@ -405,6 +419,9 @@ class RBTree:
         node_y.left = node_x
         node_x.parent = node_y
 
+        if self._metrics_enabled:
+            self._rotate_counter.increase()
+
     def _right_rotate(self, node_x: Node) -> None:
         node_y = node_x.left  # Set node y
         if isinstance(node_y, Leaf):  # Node y cannot be a Leaf
@@ -426,6 +443,9 @@ class RBTree:
 
         node_y.right = node_x
         node_x.parent = node_y
+
+        if self._metrics_enabled:
+            self._rotate_counter.increase()
 
     def _insert_fixup(self, fixing_node: Node) -> None:
         while fixing_node.parent.color == Color.RED:

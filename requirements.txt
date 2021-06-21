@@ -1,6 +1,7 @@
 black
 flake8
 mypy
+numpy
 pydocstyle
 pytest
 pytest-cov

@@ -191,7 +191,7 @@ class RBTree:
             The key of the node to be deleted.
         """
         if (deleting_node := self.search(key=key)) and (
-            not isinstance(deleting_node, Leaf)
+            isinstance(deleting_node, Node)
         ):
             original_color = deleting_node.color
 
@@ -223,7 +223,10 @@ class RBTree:
                 original_color = replacing_node.color
                 replacing_replacement = replacing_node.right
                 # The replacing node is not the direct child of the deleting node
-                if replacing_node.parent != deleting_node:
+                if replacing_node.parent == deleting_node:
+                    if isinstance(replacing_replacement, Node):
+                        replacing_replacement.parent = replacing_node
+                else:
                     self._transplant(replacing_node, replacing_node.right)
                     replacing_node.right = deleting_node.right
                     replacing_node.right.parent = replacing_node
@@ -496,6 +499,9 @@ class RBTree:
                     self._left_rotate(fixing_node.parent)  # type: ignore
                     sibling = fixing_node.parent.right  # type: ignore
 
+                if isinstance(sibling, Leaf):
+                    break
+
                 # Case 2: the sibling is black and its children are black.
                 if (sibling.left.color == Color.BLACK) and (  # type: ignore
                     sibling.right.color == Color.BLACK  # type: ignore
@@ -530,6 +536,9 @@ class RBTree:
                     fixing_node.parent.color = Color.RED  # type: ignore
                     self._right_rotate(node_x=fixing_node.parent)  # type: ignore
                     sibling = fixing_node.parent.left  # type: ignore
+
+                if isinstance(sibling, Leaf):
+                    break
 
                 # Case 6: the sibling is black and its children are black.
                 if (sibling.right.color == Color.BLACK) and (  # type: ignore

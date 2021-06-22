@@ -240,8 +240,8 @@ class RBTree:
                     if isinstance(replacing_replacement, Node):
                         self._delete_fixup(fixing_node=replacing_replacement)
 
-        if self._metrics_enabled:
-            self._height_histogram.update(value=self.get_height(self.root))
+            if self._metrics_enabled:
+                self._height_histogram.update(value=self.get_height(self.root))
 
     @staticmethod
     def get_height(node: Union[Leaf, Node]) -> int:

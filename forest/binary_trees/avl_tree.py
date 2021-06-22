@@ -185,8 +185,8 @@ class AVLTree:
             else:
                 self._delete_one_child(deleting_node=deleting_node)
 
-        if self._metrics_enabled:
-            self._height_histogram.update(value=self.get_height(self.root))
+            if self._metrics_enabled:
+                self._height_histogram.update(value=self.get_height(self.root))
 
     @staticmethod
     def get_leftmost(node: Node) -> Node:

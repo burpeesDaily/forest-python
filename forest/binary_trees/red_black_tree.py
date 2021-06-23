@@ -10,6 +10,7 @@ from dataclasses import dataclass
 
 from typing import Any, Optional, Union
 
+from forest import metrics
 from forest import tree_exceptions
 from forest.binary_trees import traversal
 
@@ -81,9 +82,15 @@ class RBTree:
         Post-order traversal.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, registry: Optional[metrics.MetricsRegistry] = None) -> None:
         self._NIL: Leaf = Leaf()
         self.root: Union[Node, Leaf] = self._NIL
+        self._metrics_enabled = True if registry else False
+        if self._metrics_enabled and registry:
+            self._rotate_counter = metrics.Counter()
+            self._height_histogram = metrics.Histogram()
+            registry.register(name="rbt.rotate", metric=self._rotate_counter)
+            registry.register(name="rbt.height", metric=self._height_histogram)
 
     def __repr__(self) -> str:
         """Provie the tree representation to visualize its layout."""
@@ -172,6 +179,9 @@ class RBTree:
             # After the insertion, fix the broken red-black-tree-properties.
             self._insert_fixup(new_node)
 
+        if self._metrics_enabled:
+            self._height_histogram.update(value=self.get_height(self.root))
+
     def delete(self, key: Any) -> None:
         """Delete a node according to the given key.
 
@@ -181,7 +191,7 @@ class RBTree:
             The key of the node to be deleted.
         """
         if (deleting_node := self.search(key=key)) and (
-            not isinstance(deleting_node, Leaf)
+            isinstance(deleting_node, Node)
         ):
             original_color = deleting_node.color
 
@@ -204,7 +214,8 @@ class RBTree:
                 )
                 # Fixup
                 if original_color == Color.BLACK:
-                    self._delete_fixup(fixing_node=replacing_node)
+                    if isinstance(replacing_node, Node):
+                        self._delete_fixup(fixing_node=replacing_node)
 
             # Case 3: two children
             else:
@@ -212,7 +223,10 @@ class RBTree:
                 original_color = replacing_node.color
                 replacing_replacement = replacing_node.right
                 # The replacing node is not the direct child of the deleting node
-                if replacing_node.parent != deleting_node:
+                if replacing_node.parent == deleting_node:
+                    if isinstance(replacing_replacement, Node):
+                        replacing_replacement.parent = replacing_node
+                else:
                     self._transplant(replacing_node, replacing_node.right)
                     replacing_node.right = deleting_node.right
                     replacing_node.right.parent = replacing_node
@@ -225,6 +239,9 @@ class RBTree:
                 if original_color == Color.BLACK:
                     if isinstance(replacing_replacement, Node):
                         self._delete_fixup(fixing_node=replacing_replacement)
+
+            if self._metrics_enabled:
+                self._height_histogram.update(value=self.get_height(self.root))
 
     @staticmethod
     def get_height(node: Union[Leaf, Node]) -> int:
@@ -405,6 +422,9 @@ class RBTree:
         node_y.left = node_x
         node_x.parent = node_y
 
+        if self._metrics_enabled:
+            self._rotate_counter.increase()
+
     def _right_rotate(self, node_x: Node) -> None:
         node_y = node_x.left  # Set node y
         if isinstance(node_y, Leaf):  # Node y cannot be a Leaf
@@ -426,6 +446,9 @@ class RBTree:
 
         node_y.right = node_x
         node_x.parent = node_y
+
+        if self._metrics_enabled:
+            self._rotate_counter.increase()
 
     def _insert_fixup(self, fixing_node: Node) -> None:
         while fixing_node.parent.color == Color.RED:
@@ -476,6 +499,9 @@ class RBTree:
                     self._left_rotate(fixing_node.parent)  # type: ignore
                     sibling = fixing_node.parent.right  # type: ignore
 
+                if isinstance(sibling, Leaf):
+                    break
+
                 # Case 2: the sibling is black and its children are black.
                 if (sibling.left.color == Color.BLACK) and (  # type: ignore
                     sibling.right.color == Color.BLACK  # type: ignore
@@ -510,6 +536,9 @@ class RBTree:
                     fixing_node.parent.color = Color.RED  # type: ignore
                     self._right_rotate(node_x=fixing_node.parent)  # type: ignore
                     sibling = fixing_node.parent.left  # type: ignore
+
+                if isinstance(sibling, Leaf):
+                    break
 
                 # Case 6: the sibling is black and its children are black.
                 if (sibling.right.color == Color.BLACK) and (  # type: ignore

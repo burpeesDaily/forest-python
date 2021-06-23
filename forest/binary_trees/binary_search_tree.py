@@ -8,6 +8,7 @@ import dataclasses
 
 from typing import Any, Optional
 
+from forest import metrics
 from forest import tree_exceptions
 
 
@@ -55,8 +56,12 @@ class BinarySearchTree:
         Return the height of the given node.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, registry: Optional[metrics.MetricsRegistry] = None) -> None:
         self.root: Optional[Node] = None
+        self._metrics_enabled = True if registry else False
+        if self._metrics_enabled and registry:
+            self._height_histogram = metrics.Histogram()
+            registry.register(name="bst.height", metric=self._height_histogram)
 
     def __repr__(self) -> str:
         """Provie the tree representation to visualize its layout."""
@@ -138,6 +143,9 @@ class BinarySearchTree:
         else:
             parent.right = new_node
 
+        if self._metrics_enabled and self.root:
+            self._height_histogram.update(value=self.get_height(self.root))
+
     def delete(self, key: Any) -> None:
         """Delete a node according to the given key.
 
@@ -176,6 +184,9 @@ class BinarySearchTree:
                 )
                 replacing_node.left = deleting_node.left
                 replacing_node.left.parent = replacing_node
+
+            if self._metrics_enabled and self.root:
+                self._height_histogram.update(value=self.get_height(self.root))
 
     @staticmethod
     def get_leftmost(node: Node) -> Node:

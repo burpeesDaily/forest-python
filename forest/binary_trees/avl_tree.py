@@ -7,6 +7,7 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
+from forest import metrics
 from forest import tree_exceptions
 
 
@@ -55,8 +56,14 @@ class AVLTree:
         Return the height of the given node.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, registry: Optional[metrics.MetricsRegistry] = None) -> None:
         self.root: Optional[Node] = None
+        self._metrics_enabled = True if registry else False
+        if self._metrics_enabled and registry:
+            self._rotate_counter = metrics.Counter()
+            self._height_histogram = metrics.Histogram()
+            registry.register(name="avlt.rotate", metric=self._rotate_counter)
+            registry.register(name="avlt.height", metric=self._height_histogram)
 
     def __repr__(self) -> str:
         """Provie the tree representation to visualize its layout."""
@@ -147,6 +154,9 @@ class AVLTree:
             if not (parent.left and parent.right):
                 self._insert_fixup(new_node)
 
+        if self._metrics_enabled:
+            self._height_histogram.update(value=self.get_height(self.root))
+
     def delete(self, key: Any) -> None:
         """Delete a node according to the given key.
 
@@ -174,6 +184,9 @@ class AVLTree:
             # Case: one child
             else:
                 self._delete_one_child(deleting_node=deleting_node)
+
+            if self._metrics_enabled:
+                self._height_histogram.update(value=self.get_height(self.root))
 
     @staticmethod
     def get_leftmost(node: Node) -> Node:
@@ -318,6 +331,9 @@ class AVLTree:
                 self.get_height(node_y.left), self.get_height(node_y.right)
             )
 
+            if self._metrics_enabled:
+                self._rotate_counter.increase()
+
     def _right_rotate(self, node_x: Node) -> None:
         node_y = node_x.left  # Set node y
         if node_y:
@@ -345,6 +361,9 @@ class AVLTree:
             node_y.height = 1 + max(
                 self.get_height(node_y.left), self.get_height(node_y.right)
             )
+
+            if self._metrics_enabled:
+                self._rotate_counter.increase()
 
     def _insert_fixup(self, new_node: Node) -> None:
         parent = new_node.parent

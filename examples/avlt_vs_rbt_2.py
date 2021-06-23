@@ -28,13 +28,13 @@ for operation, key in test_data:
         rbtree.delete(key=key)
 
 print("AVL Tree:")
-avlt_rotation_count = registry.get_metric(key="avlt.rotate").count
+avlt_rotation_count = registry.get_metric(name="avlt.rotate").count
 print(f"  Rotation: {avlt_rotation_count}")
-avlt_report = registry.get_metric(key="avlt.height").report()
+avlt_report = registry.get_metric(name="avlt.height").report()
 print(f"  Height:   {avlt_report}")
 
 print("Red-Black Tree")
-rbt_rotation_count = registry.get_metric(key="rbt.rotate").count
+rbt_rotation_count = registry.get_metric(name="rbt.rotate").count
 print(f"  Rotation: {rbt_rotation_count}")
-rbt_repot = registry.get_metric(key="rbt.height").report()
+rbt_repot = registry.get_metric(name="rbt.height").report()
 print(f"  Height:   {rbt_repot}")

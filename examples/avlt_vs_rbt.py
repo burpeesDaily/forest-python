@@ -27,17 +27,17 @@ for key in delete_data:
     rbtree.delete(key=key)
 
 print("Binary Search Tree:")
-bst_report = registry.get_metric(name="bst.height").report()
+bst_report = registry.get_metric(name="bst.height").report()  # type: ignore
 print(f"  Height:   {bst_report}")
 
 print("AVL Tree:")
-avlt_rotation_count = registry.get_metric(name="avlt.rotate").count
+avlt_rotation_count = registry.get_metric(name="avlt.rotate").count  # type: ignore
 print(f"  Rotation: {avlt_rotation_count}")
-avlt_report = registry.get_metric(name="avlt.height").report()
+avlt_report = registry.get_metric(name="avlt.height").report()  # type: ignore
 print(f"  Height:   {avlt_report}")
 
 print("Red-Black Tree")
-rbt_rotation_count = registry.get_metric(name="rbt.rotate").count
+rbt_rotation_count = registry.get_metric(name="rbt.rotate").count  # type: ignore
 print(f"  Rotation: {rbt_rotation_count}")
-rbt_repot = registry.get_metric(name="rbt.height").report()
+rbt_repot = registry.get_metric(name="rbt.height").report()  # type: ignore
 print(f"  Height:   {rbt_repot}")

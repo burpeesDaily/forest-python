@@ -1,7 +1,10 @@
+"""The module compare the performance of BST, AVL Tree, and Red-Black Tree."""
+
 import random
 
 from forest import metrics
 from forest.binary_trees import avl_tree
+from forest.binary_trees import binary_search_tree
 from forest.binary_trees import red_black_tree
 
 
@@ -16,16 +19,23 @@ test_data = random.sample(
 )
 
 registry = metrics.MetricsRegistry()
+bstree = binary_search_tree.BinarySearchTree(registry=registry)
 avltree = avl_tree.AVLTree(registry=registry)
 rbtree = red_black_tree.RBTree(registry=registry)
 
 for operation, key in test_data:
     if operation == "insert":
+        bstree.insert(key=key, data=str(key))
         avltree.insert(key=key, data=str(key))
         rbtree.insert(key=key, data=str(key))
     if operation == "delete":
+        bstree.delete(key=key)
         avltree.delete(key=key)
         rbtree.delete(key=key)
+
+print("Binary Search Tree:")
+bst_report = registry.get_metric(name="bst.height").report()
+print(f"  Height:   {bst_report}")
 
 print("AVL Tree:")
 avlt_rotation_count = registry.get_metric(name="avlt.rotate").count

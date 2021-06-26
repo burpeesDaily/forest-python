@@ -3,8 +3,8 @@
 import random
 import pytest
 
+from forest import metrics
 from forest import tree_exceptions
-
 from forest.binary_trees import red_black_tree
 
 
@@ -252,3 +252,16 @@ def test_random_insert_delete():
 
         result = [item for item, _ in tree.inorder_traverse()]
         assert result == remaining_data
+
+
+def test_metrics(basic_tree):
+    """Test red-black tree with metrics enabled."""
+    registry = metrics.MetricsRegistry()
+    tree = red_black_tree.RBTree(registry=registry)
+
+    # 23, 4, 30, 11, 7, 34, 20, 24, 22, 15, 1
+    for key, data in basic_tree:
+        tree.insert(key=key, data=data)
+
+    assert registry.get_metric(name="rbt.rotate").count
+    assert registry.get_metric(name="rbt.height").report()

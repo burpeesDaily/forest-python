@@ -44,7 +44,7 @@ def test_simple_case(basic_tree: list) -> None:
 
 def test_metrics(basic_tree):
     """Test binary search tree with metrics enabled."""
-    registry = metrics.MetricsRegistry()
+    registry = metrics.MetricRegistry()
     tree = binary_search_tree.BinarySearchTree(registry=registry)
 
     # 23, 4, 30, 11, 7, 34, 20, 24, 22, 15, 1

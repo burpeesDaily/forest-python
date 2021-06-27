@@ -256,7 +256,7 @@ def test_random_insert_delete():
 
 def test_metrics(basic_tree):
     """Test red-black tree with metrics enabled."""
-    registry = metrics.MetricsRegistry()
+    registry = metrics.MetricRegistry()
     tree = red_black_tree.RBTree(registry=registry)
 
     # 23, 4, 30, 11, 7, 34, 20, 24, 22, 15, 1

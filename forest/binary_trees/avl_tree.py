@@ -56,7 +56,7 @@ class AVLTree:
         Return the height of the given node.
     """
 
-    def __init__(self, registry: Optional[metrics.MetricsRegistry] = None) -> None:
+    def __init__(self, registry: Optional[metrics.MetricRegistry] = None) -> None:
         self.root: Optional[Node] = None
         self._metrics_enabled = True if registry else False
         if self._metrics_enabled and registry:

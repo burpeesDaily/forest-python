@@ -11,7 +11,7 @@ from forest.binary_trees import red_black_tree
 insert_data = random.sample(range(1, 2000), 1000)
 delete_data = random.sample(insert_data, 1000)
 
-registry = metrics.MetricsRegistry()
+registry = metrics.MetricRegistry()
 bstree = binary_search_tree.BinarySearchTree(registry=registry)
 avltree = avl_tree.AVLTree(registry=registry)
 rbtree = red_black_tree.RBTree(registry=registry)

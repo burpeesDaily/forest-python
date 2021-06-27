@@ -82,7 +82,7 @@ class RBTree:
         Post-order traversal.
     """
 
-    def __init__(self, registry: Optional[metrics.MetricsRegistry] = None) -> None:
+    def __init__(self, registry: Optional[metrics.MetricRegistry] = None) -> None:
         self._NIL: Leaf = Leaf()
         self.root: Union[Node, Leaf] = self._NIL
         self._metrics_enabled = True if registry else False

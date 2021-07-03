@@ -398,8 +398,12 @@ def _postorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                 current = current.left
                 continue
             else:  # current.right is None
-                yield (current.key, current.data)
-                current = None
+                if current.left:
+                    stack.append(current)
+                else:
+                    yield (current.key, current.data)
+
+                current = current.left
 
         else:  # current is None
             if len(stack) > 0:

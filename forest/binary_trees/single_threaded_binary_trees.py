@@ -316,12 +316,12 @@ class RightThreadedBinaryTree:
         return parent
 
     @staticmethod
-    def get_height(node: Node) -> int:
+    def get_height(node: Optional[Node]) -> int:
         """Get the height of the given subtree.
 
         Parameters
         ----------
-        node: `Node`
+        node: `Optional[Node]`
             The root of the subtree to get its height.
 
         Returns
@@ -329,21 +329,21 @@ class RightThreadedBinaryTree:
         `int`
             The height of the given subtree. 0 if the subtree has only one node.
         """
-        if node.left and node.is_thread is False:
-            return (
-                max(
-                    RightThreadedBinaryTree.get_height(node.left),
-                    RightThreadedBinaryTree.get_height(node.right),  # type: ignore
+        if node:
+            if node.left and node.is_thread is False:
+                return (
+                    max(
+                        RightThreadedBinaryTree.get_height(node.left),
+                        RightThreadedBinaryTree.get_height(node.right),
+                    )
+                    + 1
                 )
-                + 1
-            )
 
-        if node.left:
-            return RightThreadedBinaryTree.get_height(node=node.left) + 1
+            if node.left:
+                return RightThreadedBinaryTree.get_height(node=node.left) + 1
 
-        if node.is_thread is False:
-            return RightThreadedBinaryTree.get_height(node=node.right) + 1  # type: ignore # noqa: E501
-
+            if node.is_thread is False:
+                return RightThreadedBinaryTree.get_height(node=node.right) + 1
         return 0
 
     def inorder_traverse(self) -> traversal.Pairs:
@@ -697,12 +697,12 @@ class LeftThreadedBinaryTree:
             return None
 
     @staticmethod
-    def get_height(node: Node) -> int:
+    def get_height(node: Optional[Node]) -> int:
         """Get the height of the given subtree.
 
         Parameters
         ----------
-        node: `Node`
+        node: `Optional[Node]`
             The root of the subtree to get its height.
 
         Returns
@@ -710,20 +710,21 @@ class LeftThreadedBinaryTree:
         `int`
             The height of the given subtree. 0 if the subtree has only one node.
         """
-        if node.right and node.is_thread is False:
-            return (
-                max(
-                    LeftThreadedBinaryTree.get_height(node.left),  # type: ignore
-                    LeftThreadedBinaryTree.get_height(node.right),
+        if node:
+            if node.right and node.is_thread is False:
+                return (
+                    max(
+                        LeftThreadedBinaryTree.get_height(node.left),
+                        LeftThreadedBinaryTree.get_height(node.right),
+                    )
+                    + 1
                 )
-                + 1
-            )
 
-        if node.right:
-            return LeftThreadedBinaryTree.get_height(node=node.right) + 1
+            if node.right:
+                return LeftThreadedBinaryTree.get_height(node=node.right) + 1
 
-        if node.is_thread is False:
-            return LeftThreadedBinaryTree.get_height(node=node.left) + 1  # type: ignore # noqa: E501
+            if node.is_thread is False:
+                return LeftThreadedBinaryTree.get_height(node=node.left) + 1
 
         return 0
 

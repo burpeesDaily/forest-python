@@ -3,8 +3,8 @@
 import random
 import pytest
 
+from forest import metrics
 from forest import tree_exceptions
-
 from forest.binary_trees import red_black_tree
 
 
@@ -236,18 +236,32 @@ def test_red_black_tree_traversal(basic_tree):
 
 def test_random_insert_delete():
     """Test random insert and delete."""
-    insert_data = random.sample(range(1, 2000), 1000)
-    delete_data = random.sample(insert_data, 500)
+    for _ in range(0, 10):
+        insert_data = random.sample(range(1, 2000), 1000)
+        delete_data = random.sample(insert_data, 500)
 
-    remaining_data = [item for item in insert_data if item not in delete_data]
-    remaining_data.sort()
+        remaining_data = [item for item in insert_data if item not in delete_data]
+        remaining_data.sort()
 
-    tree = red_black_tree.RBTree()
-    for key in insert_data:
-        tree.insert(key=key, data=str(key))
+        tree = red_black_tree.RBTree()
+        for key in insert_data:
+            tree.insert(key=key, data=str(key))
 
-    for key in delete_data:
-        tree.delete(key=key)
+        for key in delete_data:
+            tree.delete(key=key)
 
-    result = [item for item, _ in tree.inorder_traverse()]
-    assert result == remaining_data
+        result = [item for item, _ in tree.inorder_traverse()]
+        assert result == remaining_data
+
+
+def test_metrics(basic_tree):
+    """Test red-black tree with metrics enabled."""
+    registry = metrics.MetricRegistry()
+    tree = red_black_tree.RBTree(registry=registry)
+
+    # 23, 4, 30, 11, 7, 34, 20, 24, 22, 15, 1
+    for key, data in basic_tree:
+        tree.insert(key=key, data=data)
+
+    assert registry.get_metric(name="rbt.rotate").count
+    assert registry.get_metric(name="rbt.height").report()

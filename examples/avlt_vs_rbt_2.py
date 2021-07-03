@@ -18,7 +18,7 @@ test_data = random.sample(
     (insert_data + delete_data), len(insert_data) + len(delete_data)
 )
 
-registry = metrics.MetricsRegistry()
+registry = metrics.MetricRegistry()
 bstree = binary_search_tree.BinarySearchTree(registry=registry)
 avltree = avl_tree.AVLTree(registry=registry)
 rbtree = red_black_tree.RBTree(registry=registry)

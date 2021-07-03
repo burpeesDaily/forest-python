@@ -45,7 +45,7 @@ def test_registry():
     """Test metrics registry."""
     counter = metrics.Counter()
     histogram = metrics.Histogram()
-    registry = metrics.MetricsRegistry()
+    registry = metrics.MetricRegistry()
     registry.register("counter", counter)
     registry.register("histogram", histogram)
 

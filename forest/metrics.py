@@ -78,7 +78,7 @@ MetricType = Union[Counter, Histogram]
 """Alias for the supported metric types."""
 
 
-class MetricsRegistry:
+class MetricRegistry:
     """A registry for metric instances."""
 
     def __init__(self) -> None:

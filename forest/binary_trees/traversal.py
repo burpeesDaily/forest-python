@@ -425,3 +425,5 @@ def _postorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                     else:  # stack is empty
                         yield (current.key, current.data)
                         break
+            else:  # stack is empty
+                break

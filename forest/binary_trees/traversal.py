@@ -282,7 +282,7 @@ def _inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                     if len(stack) > 0:
                         if current.right == stack[-1]:
                             yield (current.key, current.data)
-                            current = None
+                            current = stack.pop() if len(stack) > 0 else None
                             continue
                         else:  # current.right != stack[-1]:
                             # This case means there are more nodes on the right
@@ -335,7 +335,7 @@ def _reverse_inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                     if len(stack) > 0:
                         if current.left == stack[-1]:
                             yield (current.key, current.data)
-                            current = None
+                            current = stack.pop() if len(stack) > 0 else None
                             continue
                         else:  # current.right != stack[-1]:
                             # This case means there are more nodes on the right

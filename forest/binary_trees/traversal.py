@@ -254,8 +254,7 @@ def _inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
     stack = []
     if root.right:
         stack.append(root.right)
-        stack.append(root)
-
+    stack.append(root)
     current = root.left
 
     while True:
@@ -307,8 +306,7 @@ def _reverse_inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
     stack = []
     if root.left:
         stack.append(root.left)
-        stack.append(root)
-
+    stack.append(root)
     current = root.right
 
     while True:
@@ -385,7 +383,6 @@ def _postorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
     stack = []
     if root.right:
         stack.append(root.right)
-
     stack.append(root)
     current = root.left
 

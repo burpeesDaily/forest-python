@@ -267,7 +267,7 @@ def _inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                 current = current.left
                 continue
             stack.append(current)
-            current = None
+            current = current.left
 
         else:  # current is None
 
@@ -320,7 +320,7 @@ def _reverse_inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                 current = current.right
                 continue
             stack.append(current)
-            current = None
+            current = current.right
 
         else:  # current is None
 

@@ -254,8 +254,7 @@ def _inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
     stack = []
     if root.right:
         stack.append(root.right)
-        stack.append(root)
-
+    stack.append(root)
     current = root.left
 
     while True:
@@ -267,7 +266,7 @@ def _inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                 current = current.left
                 continue
             stack.append(current)
-            current = None
+            current = current.left
 
         else:  # current is None
 
@@ -282,7 +281,7 @@ def _inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                     if len(stack) > 0:
                         if current.right == stack[-1]:
                             yield (current.key, current.data)
-                            current = None
+                            current = stack.pop() if len(stack) > 0 else None
                             continue
                         else:  # current.right != stack[-1]:
                             # This case means there are more nodes on the right
@@ -307,8 +306,7 @@ def _reverse_inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
     stack = []
     if root.left:
         stack.append(root.left)
-        stack.append(root)
-
+    stack.append(root)
     current = root.right
 
     while True:
@@ -320,7 +318,7 @@ def _reverse_inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                 current = current.right
                 continue
             stack.append(current)
-            current = None
+            current = current.right
 
         else:  # current is None
 
@@ -335,7 +333,7 @@ def _reverse_inorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                     if len(stack) > 0:
                         if current.left == stack[-1]:
                             yield (current.key, current.data)
-                            current = None
+                            current = stack.pop() if len(stack) > 0 else None
                             continue
                         else:  # current.right != stack[-1]:
                             # This case means there are more nodes on the right
@@ -385,7 +383,6 @@ def _postorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
     stack = []
     if root.right:
         stack.append(root.right)
-
     stack.append(root)
     current = root.left
 
@@ -398,8 +395,12 @@ def _postorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                 current = current.left
                 continue
             else:  # current.right is None
-                yield (current.key, current.data)
-                current = None
+                if current.left:
+                    stack.append(current)
+                else:
+                    yield (current.key, current.data)
+
+                current = current.left
 
         else:  # current is None
             if len(stack) > 0:
@@ -421,3 +422,5 @@ def _postorder_traverse_non_recursive(root: SupportedNode) -> Pairs:
                     else:  # stack is empty
                         yield (current.key, current.data)
                         break
+            else:  # stack is empty
+                break

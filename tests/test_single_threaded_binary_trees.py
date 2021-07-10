@@ -256,3 +256,34 @@ def test_deletion_left_threaded_case(basic_tree):
         (4, "4"),
         (1, "1"),
     ] == [item for item in tree.reverse_inorder_traverse()]
+
+
+def test_deletion_left_threaded_case_2():
+    """Test the deletion of a left threaded binary tree."""
+    tree = single_threaded_binary_trees.LeftThreadedBinaryTree()
+
+    test_tree = [
+        (4, "4"),
+        (1, "1"),
+        (7, "7"),
+        (3, "3"),
+        (5, "5"),
+        (8, "8"),
+        (2, "2"),
+        (6, "6"),
+    ]
+
+    for key, data in test_tree:
+        tree.insert(key=key, data=data)
+
+    tree.delete(4)
+
+    assert [
+        (8, "8"),
+        (7, "7"),
+        (6, "6"),
+        (5, "5"),
+        (3, "3"),
+        (2, "2"),
+        (1, "1"),
+    ] == [item for item in tree.reverse_inorder_traverse()]

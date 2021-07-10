@@ -270,7 +270,7 @@ def test_deletion_left_threaded_case_2():
         (5, "5"),
         (8, "8"),
         (2, "2"),
-        (6, "6")
+        (6, "6"),
     ]
 
     for key, data in test_tree:

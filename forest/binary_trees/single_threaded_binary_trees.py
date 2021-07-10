@@ -584,15 +584,10 @@ class LeftThreadedBinaryTree:
                 successor = self.get_successor(node=replacing_node)
                 # the minmum node is not the direct child of the deleting node
                 if replacing_node.parent != deleting_node:
-                    if replacing_node.is_thread:
-                        self._transplant(
-                            deleting_node=replacing_node, replacing_node=None
-                        )
-                    else:
-                        self._transplant(
-                            deleting_node=replacing_node,
-                            replacing_node=replacing_node.right,
-                        )
+                    self._transplant(
+                        deleting_node=replacing_node,
+                        replacing_node=replacing_node.right,
+                    )
                     replacing_node.right = deleting_node.right
                     replacing_node.right.parent = replacing_node
 

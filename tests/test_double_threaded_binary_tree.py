@@ -204,3 +204,24 @@ def test_deletion_double_threaded_case(basic_tree):
         (4, "4"),
         (1, "1"),
     ] == [item for item in tree.reverse_inorder_traverse()]
+
+
+def test_empty():
+    """Test a double threaded tree becomes empty."""
+    tree = double_threaded_binary_tree.DoubleThreadedBinaryTree()
+
+    for key in range(10):
+        tree.insert(key=key, data=str(key))
+
+    for key in range(10):
+        tree.delete(key=key)
+
+    assert tree.empty
+
+    for key in reversed(range(10)):
+        tree.insert(key=key, data=str(key))
+
+    for key in reversed(range(10)):
+        tree.delete(key=key)
+
+    assert tree.empty

@@ -317,3 +317,24 @@ def test_metrics(basic_tree):
 
     assert registry.get_metric(name="avlt.rotate").count
     assert registry.get_metric(name="avlt.height").report()
+
+
+def test_empty():
+    """Test AVL becomes empty."""
+    tree = avl_tree.AVLTree()
+
+    for key in range(10):
+        tree.insert(key=key, data=str(key))
+
+    for key in range(10):
+        tree.delete(key=key)
+
+    assert tree.empty
+
+    for key in reversed(range(10)):
+        tree.insert(key=key, data=str(key))
+
+    for key in reversed(range(10)):
+        tree.delete(key=key)
+
+    assert tree.empty

@@ -52,3 +52,24 @@ def test_metrics(basic_tree):
         tree.insert(key=key, data=data)
 
     assert registry.get_metric(name="bst.height").report()
+
+
+def test_empty():
+    """Test a tree becomes empty."""
+    tree = binary_search_tree.BinarySearchTree()
+
+    for key in range(10):
+        tree.insert(key=key, data=str(key))
+
+    for key in range(10):
+        tree.delete(key=key)
+
+    assert tree.empty
+
+    for key in reversed(range(10)):
+        tree.insert(key=key, data=str(key))
+
+    for key in reversed(range(10)):
+        tree.delete(key=key)
+
+    assert tree.empty

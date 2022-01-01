@@ -178,19 +178,23 @@ class RightThreadedBinaryTree:
             ):
                 self._transplant(deleting_node=deleting_node, replacing_node=None)
 
-            # Case 2a: only one right child
-            elif deleting_node.left is None and deleting_node.is_thread is False:
-                self._transplant(
-                    deleting_node=deleting_node, replacing_node=deleting_node.right
-                )
-
-            # Case 2b: only one left child
-            elif deleting_node.left and deleting_node.is_thread:
+            # Case 2a: only one left child
+            elif deleting_node.left and (
+                deleting_node.is_thread
+                or deleting_node.right is None
+                # deleting_node.right is None means the deleting node is the root.
+            ):
                 predecessor = self.get_predecessor(node=deleting_node)
                 if predecessor:
                     predecessor.right = deleting_node.right
                 self._transplant(
                     deleting_node=deleting_node, replacing_node=deleting_node.left
+                )
+
+            # Case 2b: only one right child
+            elif deleting_node.left is None and deleting_node.is_thread is False:
+                self._transplant(
+                    deleting_node=deleting_node, replacing_node=deleting_node.right
                 )
 
             # Case 3: two children
@@ -563,19 +567,23 @@ class LeftThreadedBinaryTree:
             ):
                 self._transplant(deleting_node=deleting_node, replacing_node=None)
 
-            # Case 2a: only one right child
-            elif deleting_node.right and deleting_node.is_thread:
+            # Case 2a: only one left child
+            elif (deleting_node.right is None) and (deleting_node.is_thread is False):
+                self._transplant(
+                    deleting_node=deleting_node, replacing_node=deleting_node.left
+                )
+
+            # Case 2b: only one right child
+            elif deleting_node.right and (
+                deleting_node.is_thread
+                or deleting_node.left is None
+                # deleting_node.left is None means the deleting node is the root.
+            ):
                 successor = self.get_successor(node=deleting_node)
                 if successor:
                     successor.left = deleting_node.left
                 self._transplant(
                     deleting_node=deleting_node, replacing_node=deleting_node.right
-                )
-
-            # Case 2b: only one left left child
-            elif (deleting_node.right is None) and (deleting_node.is_thread is False):
-                self._transplant(
-                    deleting_node=deleting_node, replacing_node=deleting_node.left
                 )
 
             # Case 3: two children

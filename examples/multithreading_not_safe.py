@@ -1,0 +1,101 @@
+"""Demonstrate the binary tree data structures are not thread-safe."""
+import threading
+import sys
+
+from typing import List, Union
+
+from forest.binary_trees import avl_tree
+from forest.binary_trees import binary_search_tree
+from forest.binary_trees import double_threaded_binary_tree
+from forest.binary_trees import red_black_tree
+from forest.binary_trees import traversal
+
+
+TreeType = Union[
+    avl_tree.AVLTree,
+    binary_search_tree.BinarySearchTree,
+    double_threaded_binary_tree.DoubleThreadedBinaryTree,
+    red_black_tree.RBTree,
+]
+
+# Use a very ssmall thread switch interval to increase the chance that
+# we can reveal the multithreading issue easily.
+sys.setswitchinterval(0.0000001)
+
+
+def insert_data(tree: TreeType, data: List) -> None:
+    """Insert data into a tree."""
+    for key in data:
+        tree.insert(key=key, data=str(key))
+
+
+def multithreading_simulator(tree: TreeType) -> None:
+    """Use five threads to insert data into a tree with non-duplicate data."""
+    try:
+        thread1 = threading.Thread(
+            target=insert_data, args=(tree, [item for item in range(100)])
+        )
+        thread2 = threading.Thread(
+            target=insert_data, args=(tree, [item for item in range(100, 200)])
+        )
+        thread3 = threading.Thread(
+            target=insert_data, args=(tree, [item for item in range(200, 300)])
+        )
+        thread4 = threading.Thread(
+            target=insert_data, args=(tree, [item for item in range(300, 400)])
+        )
+        thread5 = threading.Thread(
+            target=insert_data, args=(tree, [item for item in range(400, 500)])
+        )
+
+        thread1.start()
+        thread2.start()
+        thread3.start()
+        thread4.start()
+        thread5.start()
+
+        thread1.join()
+        thread2.join()
+        thread3.join()
+        thread4.join()
+        thread5.join()
+
+        if isinstance(tree, avl_tree.AVLTree) or isinstance(
+            tree, binary_search_tree.BinarySearchTree
+        ):
+            result = [item for item in traversal.inorder_traverse(tree=tree)]
+        else:
+            result = [item for item in tree.inorder_traverse()]
+
+        incorrect_node_list = list()
+        for index in range(len(result)):
+            if index > 0:
+                if result[index] < result[index - 1]:
+                    incorrect_node_list.append(
+                        f"{result[index - 1]} -> {result[index]}"
+                    )
+
+        if len(result) != 500 or len(incorrect_node_list) > 0:
+            print(f"  total_nodes: {len(result)}")
+            print(f"  incorrect_order: {incorrect_node_list}")
+    except:  # noqa: 1722
+        print("  Tree built incorrectly.")
+
+
+if __name__ == "__main__":
+
+    print("AVL Tree:")
+    avlt = avl_tree.AVLTree()
+    multithreading_simulator(tree=avlt)
+
+    print("Binary Search Tree:")
+    bst = binary_search_tree.BinarySearchTree()
+    multithreading_simulator(tree=bst)
+
+    print("Double Threaded Binary Search Tree:")
+    double_threaded = double_threaded_binary_tree.DoubleThreadedBinaryTree()
+    multithreading_simulator(tree=double_threaded)
+
+    print("Red-Black Tree:")
+    rbt = red_black_tree.RBTree()
+    multithreading_simulator(tree=rbt)

@@ -180,7 +180,8 @@ class RightThreadedBinaryTree:
 
             # Case 2a: only one left child
             elif deleting_node.left and (
-                deleting_node.is_thread or deleting_node.right is None
+                deleting_node.is_thread
+                or deleting_node.right is None
                 # deleting_node.right is None means the deleting node is the root.
             ):
                 predecessor = self.get_predecessor(node=deleting_node)
@@ -574,7 +575,8 @@ class LeftThreadedBinaryTree:
 
             # Case 2b: only one right child
             elif deleting_node.right and (
-                deleting_node.is_thread or deleting_node.left is None
+                deleting_node.is_thread
+                or deleting_node.left is None
                 # deleting_node.left is None means the deleting node is the root.
             ):
                 successor = self.get_successor(node=deleting_node)

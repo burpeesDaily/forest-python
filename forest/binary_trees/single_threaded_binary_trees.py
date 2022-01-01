@@ -185,7 +185,9 @@ class RightThreadedBinaryTree:
                 )
 
             # Case 2b: only one left child
-            elif deleting_node.left and deleting_node.is_thread:
+            elif deleting_node.left and (
+                deleting_node.is_thread or deleting_node.right is None
+            ):
                 predecessor = self.get_predecessor(node=deleting_node)
                 if predecessor:
                     predecessor.right = deleting_node.right
@@ -564,7 +566,9 @@ class LeftThreadedBinaryTree:
                 self._transplant(deleting_node=deleting_node, replacing_node=None)
 
             # Case 2a: only one right child
-            elif deleting_node.right and deleting_node.is_thread:
+            elif deleting_node.right and (
+                deleting_node.is_thread or deleting_node.left is None
+            ):
                 successor = self.get_successor(node=deleting_node)
                 if successor:
                     successor.left = deleting_node.left

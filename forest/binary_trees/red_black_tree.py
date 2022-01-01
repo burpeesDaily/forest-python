@@ -94,12 +94,12 @@ class RBTree:
 
     def __repr__(self) -> str:
         """Provie the tree representation to visualize its layout."""
-        if self.root:
-            return (
-                f"{type(self)}, root={self.root}, "
-                f"tree_height={str(self.get_height(self.root))}"
-            )
-        return "empty tree"
+        if (self.root is None) or (self.root == self._NIL):
+            return "empty tree"
+        return (
+            f"{type(self)}, root={self.root}, "
+            f"tree_height={str(self.get_height(self.root))}"
+        )
 
     @property
     def empty(self) -> bool:
@@ -109,7 +109,7 @@ class RBTree:
         -----
         The property, `empty`, is read-only.
         """
-        return self.root is self._NIL
+        return (self.root is None) or (self.root == self._NIL)
 
     def search(self, key: Any) -> Optional[Node]:
         """Look for a node by a given key.

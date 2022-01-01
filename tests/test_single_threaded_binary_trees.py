@@ -136,6 +136,19 @@ def test_deletion_right_threaded_case(basic_tree):
     ] == [item for item in tree.inorder_traverse()]
 
 
+def test_deletion_right_threaded_empty():
+    """Test deletion when right threaded binary tree is a chain and becomes empty."""
+    tree = single_threaded_binary_trees.RightThreadedBinaryTree()
+
+    for key in reversed(range(2)):
+        tree.insert(key=key, data=str(key))
+
+    for key in reversed(range(2)):
+        tree.delete(key=key)
+
+    assert tree.empty
+
+
 def test_simple_left_threaded_case(basic_tree):
     """Test the basic opeartions of a left threaded binary search tree."""
     tree = single_threaded_binary_trees.LeftThreadedBinaryTree()
@@ -287,3 +300,24 @@ def test_deletion_left_threaded_case_2():
         (2, "2"),
         (1, "1"),
     ] == [item for item in tree.reverse_inorder_traverse()]
+
+
+def test_deletion_left_threaded_empty():
+    """Test deletion when left threaded binary tree is a chain and becomes empty."""
+    tree = single_threaded_binary_trees.LeftThreadedBinaryTree()
+
+    for key in range(10):
+        tree.insert(key=key, data=str(key))
+
+    for key in range(10):
+        tree.delete(key=key)
+
+    assert tree.empty
+
+    for key in reversed(range(10)):
+        tree.insert(key=key, data=str(key))
+
+    for key in reversed(range(10)):
+        tree.delete(key=key)
+
+    assert tree.empty

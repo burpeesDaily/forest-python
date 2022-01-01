@@ -108,7 +108,7 @@ def test_deletion(basic_tree):
     ]
 
 
-def test_deletion_no_child(basic_tree):
+def test_deletion_no_child():
     """Test the deletion of a red black tree."""
     tree = red_black_tree.RBTree()
 
@@ -125,7 +125,7 @@ def test_deletion_no_child(basic_tree):
     ]
 
 
-def test_deletion_one_child(basic_tree):
+def test_deletion_one_child():
     """Test the deletion of a red black tree."""
     tree = red_black_tree.RBTree()
 
@@ -154,7 +154,7 @@ def test_deletion_one_child(basic_tree):
     ]
 
 
-def test_deletion_two_children(basic_tree):
+def test_deletion_two_children():
     """Test the deletion of a red black tree."""
     tree = red_black_tree.RBTree()
 
@@ -265,3 +265,24 @@ def test_metrics(basic_tree):
 
     assert registry.get_metric(name="rbt.rotate").count
     assert registry.get_metric(name="rbt.height").report()
+
+
+def test_empty():
+    """Test red-black becomes empty."""
+    tree = red_black_tree.RBTree()
+
+    for key in range(10):
+        tree.insert(key=key, data=str(key))
+
+    for key in range(10):
+        tree.delete(key=key)
+
+    assert tree.empty
+
+    for key in reversed(range(10)):
+        tree.insert(key=key, data=str(key))
+
+    for key in reversed(range(10)):
+        tree.delete(key=key)
+
+    assert tree.empty

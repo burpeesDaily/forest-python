@@ -27,8 +27,14 @@ def insert_data(tree: TreeType, data: List) -> None:
         tree.insert(key=key, data=str(key))
 
 
+def delete_data(tree: TreeType, data: List) -> None:
+    """Delete data from a tree."""
+    for key in data:
+        tree.delete(key=key)
+
+
 def multithreading_simulator(tree: TreeType) -> bool:
-    """Use five threads to insert data into a tree with non-duplicate data."""
+    """Use five threads to insert and delete with non-duplicate data."""
     thread1 = threading.Thread(
         target=insert_data, args=(tree, [item for item in range(100)])
     )
@@ -78,6 +84,37 @@ def multithreading_simulator(tree: TreeType) -> bool:
 
     if len(result) != 500:
         return False
+
+    thread1 = threading.Thread(
+        target=delete_data, args=(tree, [item for item in range(100)])
+    )
+    thread2 = threading.Thread(
+        target=delete_data, args=(tree, [item for item in range(100, 200)])
+    )
+    thread3 = threading.Thread(
+        target=delete_data, args=(tree, [item for item in range(200, 300)])
+    )
+    thread4 = threading.Thread(
+        target=delete_data, args=(tree, [item for item in range(300, 400)])
+    )
+    thread5 = threading.Thread(
+        target=delete_data, args=(tree, [item for item in range(400, 500)])
+    )
+
+    thread1.start()
+    thread2.start()
+    thread3.start()
+    thread4.start()
+    thread5.start()
+
+    thread1.join()
+    thread2.join()
+    thread3.join()
+    thread4.join()
+    thread5.join()
+
+    if not tree.empty:
+        False
 
     return True
 

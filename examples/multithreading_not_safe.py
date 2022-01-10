@@ -18,7 +18,7 @@ TreeType = Union[
     red_black_tree.RBTree,
 ]
 
-# Use a very ssmall thread switch interval to increase the chance that
+# Use a very small thread switch interval to increase the chance that
 # we can reveal the multithreading issue easily.
 sys.setswitchinterval(0.0000001)
 

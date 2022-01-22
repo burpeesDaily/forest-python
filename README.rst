@@ -28,7 +28,7 @@ Requirements
 
 Installation
 ------------
-There are a few ways to install ``forest-python``. 
+There are a few ways to install ``forest-python``.
 
 - Install the latest release from PyPI
 

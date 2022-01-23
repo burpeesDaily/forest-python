@@ -23,6 +23,11 @@ class AVLTree(avl_tree.AVLTree):
         avl_tree.AVLTree.__init__(self, registry=registry)
         self._lock = threading.Lock()
 
+    def search(self, key: Any) -> Optional[avl_tree.Node]:
+        """Thread-safe search."""
+        with self._lock:
+            return avl_tree.AVLTree.search(self, key=key)
+
     def insert(self, key: Any, data: Any) -> None:
         """Thread-safe insert."""
         with self._lock:

@@ -2,21 +2,9 @@
 import threading
 import time
 
-from typing import Any, List, Optional
+from typing import List
 from forest.binary_trees import avl_tree
-
-
-class TestAVLTree(avl_tree.AVLTree):
-    """Test AVL Tree with an unnecessary lock."""
-
-    def __init__(self) -> None:
-        avl_tree.AVLTree.__init__(self)
-        self._lock = threading.Lock()
-
-    def search(self, key: Any) -> Optional[avl_tree.Node]:
-        """Query a node with an unnecessary lock."""
-        with self._lock:
-            return avl_tree.AVLTree.search(self, key=key)
+from forest.binary_trees import atomic_trees
 
 
 def query_data(tree: avl_tree.AVLTree, data: List) -> None:
@@ -73,7 +61,7 @@ if __name__ == "__main__":
     print(f"Time in seconds: {delta_with_threads}")
 
     # Multithread with lock case
-    avl_tree_with_lock = TestAVLTree()
+    avl_tree_with_lock = atomic_trees.AVLTree()
     for key in range(total_nodes):
         avl_tree_with_lock.insert(key=key, data=str(key))
 

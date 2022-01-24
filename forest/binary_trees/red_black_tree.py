@@ -125,6 +125,9 @@ class RBTree:
             The node found by the given key.
         If the key does not exist, return `None`.
         """
+        return self._search(key=key)
+
+    def _search(self, key: Any) -> Optional[Node]:
         current = self.root
 
         while isinstance(current, Node):
@@ -190,7 +193,7 @@ class RBTree:
         key: `Any`
             The key of the node to be deleted.
         """
-        if (deleting_node := self.search(key=key)) and (
+        if (deleting_node := self._search(key=key)) and (
             isinstance(deleting_node, Node)
         ):
             original_color = deleting_node.color

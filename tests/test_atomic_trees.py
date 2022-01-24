@@ -2,7 +2,7 @@
 import sys
 import threading
 
-from typing import List, Union
+from typing import Any, List, Union
 
 from forest.binary_trees import atomic_trees
 from forest.binary_trees import traversal
@@ -33,7 +33,7 @@ def delete_data(tree: TreeType, data: List) -> None:
         tree.delete(key=key)
 
 
-def multithreading_simulator(tree: TreeType) -> bool:
+def multithreading_simulator_write_contention(tree: TreeType) -> bool:
     """Use five threads to insert and delete with non-duplicate data."""
     thread1 = threading.Thread(
         target=insert_data, args=(tree, [item for item in range(100)])
@@ -119,37 +119,115 @@ def multithreading_simulator(tree: TreeType) -> bool:
     return True
 
 
-def test_atomic_avl_tree():
+flag = False
+if_exist = True
+
+
+def find_node(tree: atomic_trees.AVLTree, key: Any) -> None:
+    """Search a specific node."""
+    while flag:
+        if not tree.search(key):
+            global if_exist
+            if_exist = False
+
+
+def multithreading_simulator_read_write_contention(tree: TreeType) -> bool:
+    """Use one thread to delete data and one thread to query at the same time."""
+    global flag
+    flag = True
+    global if_exist
+    if_exist = True
+    tree_size = 2000
+    for key in range(tree_size):
+        tree.insert(key=key, data=str(key))
+
+    delete_thread = threading.Thread(
+        target=delete_data, args=(tree, [item for item in range(20, tree_size)])
+    )
+    query_node_key = 17
+    query_thread = threading.Thread(target=find_node, args=(tree, query_node_key))
+
+    delete_thread.start()
+    query_thread.start()
+
+    delete_thread.join()
+    flag = False
+    query_thread.join()
+
+    return if_exist
+
+
+def test_atomic_avl_tree_write_contention():
     """Test if atomic AVL tree is thread-safe."""
-    tree = atomic_trees.AVLTree()
-    assert multithreading_simulator(tree=tree) is True
+    assert multithreading_simulator_write_contention(tree=atomic_trees.AVLTree())
 
 
-def test_atomic_binary_search_tree():
+def test_atomic_avl_tree_read_write_contention():
+    """Test if atomic AVL tree is thread-safe."""
+    assert multithreading_simulator_read_write_contention(tree=atomic_trees.AVLTree())
+
+
+def test_atomic_binary_search_tree_write_contention():
     """Test if atomic binary search tree is thread-safe."""
-    tree = atomic_trees.BinarySearchTree()
-    assert multithreading_simulator(tree=tree) is True
+    assert multithreading_simulator_write_contention(
+        tree=atomic_trees.BinarySearchTree()
+    )
 
 
-def test_atomic_double_threaded_tree():
+def test_atomic_binary_search_tree_read_write_contention():
+    """Test if atomic binary search tree is thread-safe."""
+    assert multithreading_simulator_read_write_contention(
+        tree=atomic_trees.BinarySearchTree()
+    )
+
+
+def test_atomic_double_threaded_tree_write_contention():
     """Test if atomic double threaded tree is thread-safe."""
-    tree = atomic_trees.DoubleThreadedBinaryTree()
-    assert multithreading_simulator(tree=tree) is True
+    assert multithreading_simulator_write_contention(
+        tree=atomic_trees.DoubleThreadedBinaryTree()
+    )
 
 
-def test_atomic_red_black_tree():
+def test_atomic_double_threaded_tree_read_write_contention():
+    """Test if atomic double threaded tree is thread-safe."""
+    assert multithreading_simulator_read_write_contention(
+        tree=atomic_trees.DoubleThreadedBinaryTree()
+    )
+
+
+def test_atomic_red_black_tree_write_contention():
     """Test if atomic red-black tree is thread-safe."""
-    tree = atomic_trees.RBTree()
-    assert multithreading_simulator(tree=tree) is True
+    assert multithreading_simulator_write_contention(tree=atomic_trees.RBTree())
 
 
-def test_atomic_left_threaded_tree():
+def test_atomic_red_black_tree_read_write_contention():
+    """Test if atomic red-black tree is thread-safe."""
+    assert multithreading_simulator_read_write_contention(tree=atomic_trees.RBTree())
+
+
+def test_atomic_left_threaded_tree_write_contention():
     """Test if atomic left threaded tree is thread-safe."""
-    tree = atomic_trees.LeftThreadedBinaryTree()
-    assert multithreading_simulator(tree=tree)
+    assert multithreading_simulator_write_contention(
+        tree=atomic_trees.LeftThreadedBinaryTree()
+    )
 
 
-def test_atomic_right_threaded_tree():
+def test_atomic_left_threaded_tree_read_write_contention():
+    """Test if atomic left threaded tree is thread-safe."""
+    assert multithreading_simulator_read_write_contention(
+        tree=atomic_trees.LeftThreadedBinaryTree()
+    )
+
+
+def test_atomic_right_threaded_tree_write_contention():
     """Test if atomic right threaded tree is thread-safe."""
-    tree = atomic_trees.RightThreadedBinaryTree()
-    assert multithreading_simulator(tree=tree)
+    assert multithreading_simulator_write_contention(
+        tree=atomic_trees.RightThreadedBinaryTree()
+    )
+
+
+def test_atomic_right_threaded_tree_read_write_contention():
+    """Test if atomic right threaded tree is thread-safe."""
+    assert multithreading_simulator_read_write_contention(
+        tree=atomic_trees.RightThreadedBinaryTree()
+    )

@@ -1,4 +1,4 @@
-"""Example to show atomic trees are thread-safe."""
+"""Example to show atomic trees are thread-safe in write contention situation."""
 import threading
 import sys
 

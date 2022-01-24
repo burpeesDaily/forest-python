@@ -12,7 +12,7 @@ from forest.binary_trees import avl_tree
 sys.setswitchinterval(0.0000001)
 
 
-flag = False
+flag = False  # Flag to determine if the read thread stops or continues.
 
 
 def delete_data(tree: avl_tree.AVLTree, data: List) -> None:
@@ -50,7 +50,6 @@ def multithreading_simulator(tree: avl_tree.AVLTree, tree_size: int) -> None:
 
 
 if __name__ == "__main__":
-
     print("Build an AVL Tree")
     tree = avl_tree.AVLTree()
     tree_size = 200

@@ -23,6 +23,11 @@ class AVLTree(avl_tree.AVLTree):
         avl_tree.AVLTree.__init__(self, registry=registry)
         self._lock = threading.Lock()
 
+    def search(self, key: Any) -> Optional[avl_tree.Node]:
+        """Thread-safe search."""
+        with self._lock:
+            return avl_tree.AVLTree.search(self, key=key)
+
     def insert(self, key: Any, data: Any) -> None:
         """Thread-safe insert."""
         with self._lock:
@@ -40,6 +45,11 @@ class BinarySearchTree(binary_search_tree.BinarySearchTree):
     def __init__(self, registry: Optional[metrics.MetricRegistry] = None) -> None:
         binary_search_tree.BinarySearchTree.__init__(self, registry=registry)
         self._lock = threading.Lock()
+
+    def search(self, key: Any) -> Optional[binary_search_tree.Node]:
+        """Thread-safe search."""
+        with self._lock:
+            return binary_search_tree.BinarySearchTree.search(self, key=key)
 
     def insert(self, key: Any, data: Any) -> None:
         """Thread-safe insert."""
@@ -59,6 +69,11 @@ class RBTree(red_black_tree.RBTree):
         red_black_tree.RBTree.__init__(self, registry=registry)
         self._lock = threading.Lock()
 
+    def search(self, key: Any) -> Optional[red_black_tree.Node]:
+        """Thread-safe search."""
+        with self._lock:
+            return red_black_tree.RBTree.search(self, key=key)
+
     def insert(self, key: Any, data: Any) -> None:
         """Thread-safe insert."""
         with self._lock:
@@ -76,6 +91,13 @@ class DoubleThreadedBinaryTree(double_threaded_binary_tree.DoubleThreadedBinaryT
     def __init__(self) -> None:
         double_threaded_binary_tree.DoubleThreadedBinaryTree.__init__(self)
         self._lock = threading.Lock()
+
+    def search(self, key: Any) -> Optional[double_threaded_binary_tree.Node]:
+        """Thread-safe search."""
+        with self._lock:
+            return double_threaded_binary_tree.DoubleThreadedBinaryTree.search(
+                self, key=key
+            )
 
     def insert(self, key: Any, data: Any) -> None:
         """Thread-safe insert."""
@@ -97,6 +119,13 @@ class LeftThreadedBinaryTree(single_threaded_binary_trees.LeftThreadedBinaryTree
         single_threaded_binary_trees.LeftThreadedBinaryTree.__init__(self)
         self._lock = threading.Lock()
 
+    def search(self, key: Any) -> Optional[single_threaded_binary_trees.Node]:
+        """Thread-safe search."""
+        with self._lock:
+            return single_threaded_binary_trees.LeftThreadedBinaryTree.search(
+                self, key=key
+            )
+
     def insert(self, key: Any, data: Any) -> None:
         """Thread-safe insert."""
         with self._lock:
@@ -116,6 +145,13 @@ class RightThreadedBinaryTree(single_threaded_binary_trees.RightThreadedBinaryTr
     def __init__(self) -> None:
         single_threaded_binary_trees.RightThreadedBinaryTree.__init__(self)
         self._lock = threading.Lock()
+
+    def search(self, key: Any) -> Optional[single_threaded_binary_trees.Node]:
+        """Thread-safe search."""
+        with self._lock:
+            return single_threaded_binary_trees.RightThreadedBinaryTree.search(
+                self, key=key
+            )
 
     def insert(self, key: Any, data: Any) -> None:
         """Thread-safe insert."""

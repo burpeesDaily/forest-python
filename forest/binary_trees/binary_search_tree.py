@@ -96,6 +96,9 @@ class BinarySearchTree:
             The node found by the given key.
         If the key does not exist, return `None`.
         """
+        return self._search(key=key)
+
+    def _search(self, key: Any) -> Optional[Node]:
         current = self.root
 
         while current:
@@ -154,7 +157,7 @@ class BinarySearchTree:
         key: `Any`
             The key of the node to be deleted.
         """
-        if self.root and (deleting_node := self.search(key=key)):
+        if self.root and (deleting_node := self._search(key=key)):
 
             # Case 1: no child or Case 2a: only one right child
             if deleting_node.left is None:

@@ -44,7 +44,7 @@ def multithreading_simulator(tree: avl_tree.AVLTree, tree_size: int) -> None:
     delete_thread.join()
     flag = False
     query_thread.join()
-    print(f"Check if the node {query_node_key} exist?")
+    print(f"Check if node {query_node_key} exist?")
     if tree.search(key=query_node_key):
         print(f"{query_node_key} exists")
 

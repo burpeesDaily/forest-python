@@ -2,18 +2,20 @@
 import threading
 import time
 
-from typing import List
+from typing import List, Union
 from forest.binary_trees import avl_tree
 from forest.binary_trees import atomic_trees
 
 
-def query_data(tree: avl_tree.AVLTree, data: List) -> None:
+def query_data(tree: Union[atomic_trees.AVLTree, avl_tree.AVLTree], data: List) -> None:
     """Query nodes from a tree."""
     for key in data:
         tree.search(key=key)
 
 
-def multithreading_simulator(tree: avl_tree.AVLTree, total_nodes: int) -> float:
+def multithreading_simulator(
+    tree: Union[atomic_trees.AVLTree, avl_tree.AVLTree], total_nodes: int
+) -> float:
     """Use two threads to query nodes with different ranges."""
     thread1 = threading.Thread(
         target=query_data, args=(tree, [item for item in range(total_nodes // 2)])

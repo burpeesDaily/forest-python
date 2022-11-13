@@ -2,7 +2,7 @@
 import threading
 import sys
 
-from typing import Any, List
+from typing import Any
 
 from forest.binary_trees import atomic_trees
 
@@ -15,7 +15,7 @@ sys.setswitchinterval(0.0000001)
 flag = False
 
 
-def delete_data(tree: atomic_trees.AVLTree, data: List) -> None:
+def delete_data(tree: atomic_trees.AVLTree, data: list) -> None:
     """Delete data from a tree."""
     for key in data:
         tree.delete(key=key)

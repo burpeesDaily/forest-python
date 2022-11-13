@@ -2,7 +2,7 @@
 import threading
 import sys
 
-from typing import List, Union
+from typing import Union
 
 from forest.binary_trees import avl_tree
 from forest.binary_trees import binary_search_tree
@@ -23,7 +23,7 @@ TreeType = Union[
 sys.setswitchinterval(0.0000001)
 
 
-def insert_data(tree: TreeType, data: List) -> None:
+def insert_data(tree: TreeType, data: list) -> None:
     """Insert data into a tree."""
     for key in data:
         tree.insert(key=key, data=str(key))

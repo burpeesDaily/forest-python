@@ -2,12 +2,12 @@
 import threading
 import time
 
-from typing import List, Union
+from typing import Union
 from forest.binary_trees import avl_tree
 from forest.binary_trees import atomic_trees
 
 
-def query_data(tree: Union[atomic_trees.AVLTree, avl_tree.AVLTree], data: List) -> None:
+def query_data(tree: Union[atomic_trees.AVLTree, avl_tree.AVLTree], data: list) -> None:
     """Query nodes from a tree."""
     for key in data:
         tree.search(key=key)

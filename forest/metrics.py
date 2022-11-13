@@ -6,7 +6,7 @@
 
 import numpy as np
 
-from typing import Dict, List, Union
+from typing import Union
 
 
 class Counter:
@@ -45,7 +45,7 @@ class Histogram:
     """A metric which calculates the distribution of a value."""
 
     def __init__(self) -> None:
-        self._values: List[int] = list()
+        self._values: list[int] = list()
 
     def update(self, value: int) -> None:
         """Add a recorded value.
@@ -57,7 +57,7 @@ class Histogram:
         """
         self._values.append(value)
 
-    def report(self) -> Dict:
+    def report(self) -> dict:
         """Return the histogram report."""
         array = np.array(self._values)
         return {
@@ -82,7 +82,7 @@ class MetricRegistry:
     """A registry for metric instances."""
 
     def __init__(self) -> None:
-        self._registry: Dict[str, MetricType] = dict()
+        self._registry: dict[str, MetricType] = dict()
 
     def register(self, name: str, metric: MetricType) -> None:
         """Given a metric, register it under the given name.

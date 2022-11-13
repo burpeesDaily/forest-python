@@ -2,7 +2,7 @@
 import sys
 import threading
 
-from typing import Any, List, Union
+from typing import Any, Union
 
 from forest.binary_trees import atomic_trees
 from forest.binary_trees import traversal
@@ -21,13 +21,13 @@ TreeType = Union[
 ]
 
 
-def insert_data(tree: TreeType, data: List) -> None:
+def insert_data(tree: TreeType, data: list) -> None:
     """Insert data into a tree."""
     for key in data:
         tree.insert(key=key, data=str(key))
 
 
-def delete_data(tree: TreeType, data: List) -> None:
+def delete_data(tree: TreeType, data: list) -> None:
     """Delete data from a tree."""
     for key in data:
         tree.delete(key=key)

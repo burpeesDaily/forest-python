@@ -1,0 +1,21 @@
+[project]
+name = "forest-python"
+version = "0.6.3"
+authors = [
+    { name="Shun Huang", email="shun@formosa1544.com" }
+]
+description = "The Forest Project in Python"
+readme = {file = "README.rst", content-type = "text/x-rst"}
+requires-python = ">=3.9"
+license = {text = "MIT License"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+]
+keywords = ["tree", "data-structures"]
+
+[tool.setuptools.packages.find]
+exclude = ["examples", "tests"]
+
+[project.urls]
+repository = "https://github.com/burpeesDaily/forest-python"

@@ -158,7 +158,6 @@ class BinarySearchTree:
             The key of the node to be deleted.
         """
         if self.root and (deleting_node := self._search(key=key)):
-
             # Case 1: no child or Case 2a: only one right child
             if deleting_node.left is None:
                 self._transplant(

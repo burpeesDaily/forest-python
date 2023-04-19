@@ -129,7 +129,6 @@ def test_binary_search_tree_traversal(basic_tree):
 def test_binary_search_tree_traversal_random():
     """Test binary search tree traversal with random sampling."""
     for _ in range(0, 10):
-
         insert_data = random.sample(range(1, 2000), 1000)
 
         tree = binary_search_tree.BinarySearchTree()

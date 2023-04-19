@@ -55,7 +55,6 @@ class MyDatabase:
 
 
 if __name__ == "__main__":
-
     # Initialize the database.
     my_database = MyDatabase()
 

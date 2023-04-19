@@ -169,7 +169,6 @@ class AVLTree:
             The key of the node to be deleted.
         """
         if self.root and (deleting_node := self._search(key=key)):
-
             # Case: no child
             if (deleting_node.left is None) and (deleting_node.right is None):
                 self._delete_no_child(deleting_node=deleting_node)
@@ -430,7 +429,6 @@ class AVLTree:
             replacing_node.parent = deleting_node.parent
 
     def _delete_fixup(self, fixing_node: Node) -> None:
-
         while fixing_node:
             fixing_node.height = 1 + max(
                 self.get_height(fixing_node.left), self.get_height(fixing_node.right)

@@ -51,7 +51,6 @@ def multithreading_simulator(tree: atomic_trees.AVLTree, tree_size: int) -> None
 
 
 if __name__ == "__main__":
-
     print("Build an AVL Tree")
     tree = atomic_trees.AVLTree()
     tree_size = 200

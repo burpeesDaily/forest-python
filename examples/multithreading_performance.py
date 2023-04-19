@@ -38,7 +38,6 @@ def multithreading_simulator(
 
 
 if __name__ == "__main__":
-
     total_nodes = 200000
 
     original_avl_tree = avl_tree.AVLTree()

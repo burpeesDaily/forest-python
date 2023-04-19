@@ -78,7 +78,6 @@ def multithreading_simulator(tree: TreeType) -> None:
 
 
 if __name__ == "__main__":
-
     print("Atomic AVL Tree:")
     avlt = atomic_trees.AVLTree()
     multithreading_simulator(tree=avlt)

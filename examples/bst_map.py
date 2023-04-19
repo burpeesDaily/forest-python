@@ -38,7 +38,6 @@ class Map:
 
 
 if __name__ == "__main__":
-
     # Initialize the Map instance.
     contacts = Map()
 

@@ -102,7 +102,6 @@ class RightThreadedBinaryTree:
         return self._search(key=key)
 
     def _search(self, key: Any) -> Optional[Node]:
-
         current = self.root
         while current:
             if key == current.key:
@@ -175,7 +174,6 @@ class RightThreadedBinaryTree:
             The key of the node to be deleted.
         """
         if self.root and (deleting_node := self._search(key=key)):
-
             # Case 1: no child
             if deleting_node.left is None and (
                 deleting_node.right is None or deleting_node.is_thread
@@ -567,7 +565,6 @@ class LeftThreadedBinaryTree:
             The key of the node to be deleted.
         """
         if self.root and (deleting_node := self._search(key=key)):
-
             # Case 1: no child
             if deleting_node.right is None and (
                 deleting_node.left is None or deleting_node.is_thread

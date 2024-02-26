@@ -524,7 +524,7 @@ class RBTree:
 
                     # Case 4: the sibling is black and its right child is red.
                     sibling.color = fixing_node.parent.color  # type: ignore
-                    if fixing_node.parent.color is not Color.BLACK:
+                    if fixing_node.parent.color is not Color.BLACK: # type: ignore
                         fixing_node.parent.color = Color.BLACK  # type: ignore
                     if sibling.right.color is not Color.BLACK:
                         sibling.right.color = Color.BLACK  # type: ignore
@@ -560,7 +560,7 @@ class RBTree:
                         self._left_rotate(node_x=sibling)  # type: ignore
                     # Case 8: the sibling is black and its left child is red.
                     sibling.color = fixing_node.parent.color  # type: ignore
-                    if fixing_node.parent.color is not Color.BLACK:
+                    if fixing_node.parent.color is not Color.BLACK: # type: ignore
                         fixing_node.parent.color = Color.BLACK  # type: ignore
                     if sibling.left.color is not Color.BLACK:
                         sibling.left.color = Color.BLACK  # type: ignore

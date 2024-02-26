@@ -1,6 +1,6 @@
 [project]
 name = "forest-python"
-version = "0.6.3"
+version = "0.6.4"
 authors = [
     { name="Shun Huang", email="shun@formosa1544.com" }
 ]

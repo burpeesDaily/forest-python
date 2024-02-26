@@ -1,4 +1,5 @@
 """Module to measure the performance using multithreading."""
+
 import threading
 import time
 

@@ -5,8 +5,7 @@
 """Red-Black Tree."""
 
 import enum
-
-from dataclasses import dataclass
+import dataclasses
 
 from typing import Any, Optional, Union
 
@@ -22,14 +21,14 @@ class Color(enum.Enum):
     BLACK = enum.auto()
 
 
-@dataclass
+@dataclasses.dataclass(frozen=True)
 class Leaf:
     """Definition Red-Black Tree Leaf node whose color is always black."""
 
     color = Color.BLACK
 
 
-@dataclass
+@dataclasses.dataclass
 class Node:
     """Red-Black Tree non-leaf node definition."""
 
@@ -518,14 +517,17 @@ class RBTree:
                 else:
                     # Case 3: the sibling is black and its left child is red.
                     if sibling.right.color == Color.BLACK:  # type: ignore
-                        sibling.left.color = Color.BLACK  # type: ignore
+                        if sibling.left.color is not Color.BLACK:
+                            sibling.left.color = Color.BLACK  # type: ignore
                         sibling.color = Color.RED  # type: ignore
                         self._right_rotate(node_x=sibling)  # type: ignore
 
                     # Case 4: the sibling is black and its right child is red.
                     sibling.color = fixing_node.parent.color  # type: ignore
-                    fixing_node.parent.color = Color.BLACK  # type: ignore
-                    sibling.right.color = Color.BLACK  # type: ignore
+                    if fixing_node.parent.color is not Color.BLACK:  # type: ignore
+                        fixing_node.parent.color = Color.BLACK  # type: ignore
+                    if sibling.right.color is not Color.BLACK:
+                        sibling.right.color = Color.BLACK  # type: ignore
                     self._left_rotate(node_x=fixing_node.parent)  # type: ignore
                     # Once we are here, all the violation has been fixed, so
                     # move to the root to terminate the loop.
@@ -552,19 +554,22 @@ class RBTree:
                 else:
                     # Case 7: the sibling is black and its right child is red.
                     if sibling.left.color == Color.BLACK:  # type: ignore
-                        sibling.right.color = Color.BLACK  # type: ignore
+                        if sibling.right.color is not Color.BLACK:
+                            sibling.right.color = Color.BLACK  # type: ignore
                         sibling.color = Color.RED
                         self._left_rotate(node_x=sibling)  # type: ignore
                     # Case 8: the sibling is black and its left child is red.
                     sibling.color = fixing_node.parent.color  # type: ignore
-                    fixing_node.parent.color = Color.BLACK  # type: ignore
-                    sibling.left.color = Color.BLACK  # type: ignore
+                    if fixing_node.parent.color is not Color.BLACK:  # type: ignore
+                        fixing_node.parent.color = Color.BLACK  # type: ignore
+                    if sibling.left.color is not Color.BLACK:
+                        sibling.left.color = Color.BLACK  # type: ignore
                     self._right_rotate(node_x=fixing_node.parent)  # type: ignore
                     # Once we are here, all the violation has been fixed, so
                     # move to the root to terminate the loop.
                     fixing_node = self.root
-
-        fixing_node.color = Color.BLACK
+        if fixing_node.color is not Color.BLACK:
+            fixing_node.color = Color.BLACK
 
     def _transplant(
         self, deleting_node: Node, replacing_node: Union[Node, Leaf]

@@ -1,4 +1,5 @@
 """Demonstrate the trees are not thread-safe in write contention situation."""
+
 import threading
 import sys
 

@@ -1,4 +1,5 @@
 """Example to show atomic trees are thread-safe in read-write contention situation."""
+
 import threading
 import sys
 

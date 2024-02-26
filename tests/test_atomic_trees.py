@@ -1,4 +1,5 @@
 """Unit tests for atomic trees."""
+
 import sys
 import threading
 

@@ -6,7 +6,7 @@ authors = [
 ]
 description = "The Forest Project in Python"
 readme = {file = "README.rst", content-type = "text/x-rst"}
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {text = "MIT License"}
 classifiers = [
     "License :: OSI Approved :: MIT License",
